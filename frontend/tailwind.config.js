@@ -5,8 +5,16 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'lora': ['Lora'], 
+        'mont': ['Montserrat'],
+        'inco': ['Inconsolata']
+      }
+    },
   },
   plugins: [],
 }
 
+//font-family: 'Lora', serif;
+//font-family: 'Montserrat', sans-serif;
