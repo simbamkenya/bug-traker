@@ -3,17 +3,25 @@ import { IoIosSettings } from "react-icons/io";
 import { RxCaretRight } from "react-icons/rx";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
+import { GoProject } from "react-icons/go";
+import { IoSettingsSharp } from "react-icons/io5";
+import { Tooltip } from "react-tooltip";
 
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);
   const [openUpdates, setOpenUpdates] = useState(false);
 
-  let searchFocus = useRef(null);
+  const [showCancelIcon, setShowCancelIcon] = useState(true);
+
+  let searchRef = useRef(null);
 
   const focus = () => {
-    searchFocus.current.focus
-  }
+    console.log("clicked", searchRef.current.focus());
+    setShowCancelIcon(!showCancelIcon);
+
+    searchRef.current.classList.toggle("w-0");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -23,49 +31,61 @@ function Dashboard(props) {
           <IoIosSettings />
         </div>
       </div>
-      <div className="flex md:flex-row flex-col gap-2 py-8 px-4 bg-green-100">
+      <div className="flex md:flex-row flex-col gap-2 py-8 px-4">
         <div
-          className={`transition-all duration-1000 border-4 bg-green-200 ${
+          className={`transition-all duration-1000 ${
             openIssues || openProjects ? "md:w-3/4" : "md:w-1/4"
           }`}
         >
-          <input
-            id="expandCollapse"
-            className="hidden"
-            type="checkbox"
-            checked={openProjects}
-            onClick={() => setOpenProjects(!openProjects)}
-          />
-
-          <label
-            className="flex justify-between font-bold text-xl"
-            htmlFor="expandCollapse"
-          >
-            <div className="flex">
-              <span
-                className={`font-extrabold text-3xl ease-out duration-300 ${
-                  openProjects ? "rotate-90" : ""
-                }`}
-              >
-                <RxCaretRight />
-              </span>
-              Projects
-            </div>
-            
-            <div className="flex gap-2 bg-yellow-100">
-              <div className="">
-              <Link className="flex my-auto items-center justify-center text-2xl h-8 w-8 rounded-full bg-blue-300">
-                +
-              </Link>
+          <div className="flex justify-between">
+            <input
+              id="expandCollapse"
+              className="hidden"
+              type="checkbox"
+              checked={openProjects}
+              onClick={() => setOpenProjects(!openProjects)}
+            />
+            {/* {{ label }} */}
+            <label
+              className="flex space-between font-bold text-xl"
+              htmlFor="expandCollapse"
+            >
+              <div className="flex">
+                <div
+                  className={`font-extrabold text-3xl ease-out duration-300 ${
+                    openProjects ? "rotate-90" : ""
+                  }`}
+                >
+                  <RxCaretRight />
+                </div>
+                Projects
+              </div>
+            </label>
+            {/* {btn and search} */}
+            <div
+              className={`${
+                openProjects ? "flex" : "hidden"
+              } transition-all delay-500 gap-2`}
+            >
+              <div className="flex items-center">
+                <Link className="border-2 flex my-auto items-center justify-center text-2xl h-8 w-8 rounded-full bg-white">
+                  +
+                </Link>
               </div>
               <div class="relative ">
                 <input
-                  class="text-sm appearance-none border-2 pl-10 border-gray-300 hover:border-gray-400 transition-colors rounded-full w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                  class="text-sm appearance-none border-2 pl-10 border-gray-300 hover:border-gray-400 transition-colors rounded-full w-full py-2 px-2 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                   id="username"
                   type="text"
+                  ref={searchRef}
+                  onClick={focus}
                   placeholder="Search..."
                 />
-                <div class="absolute right-0 inset-y-0 flex items-center">
+                <div
+                  class={`absolute right-0 inset-y-0 flex items-center ${
+                    showCancelIcon ? "" : "hidden"
+                  }`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="-ml-1 mr-3 h-5 w-5 text-gray-400 hover:text-gray-500"
@@ -89,6 +109,7 @@ function Dashboard(props) {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    onClick={focus}
                   >
                     <path
                       stroke-linecap="round"
@@ -100,16 +121,44 @@ function Dashboard(props) {
                 </div>
               </div>
             </div>
-          </label>
-          <div
-            className={classNames(" p-8 border-2 bg-white min-w-full", {
-              hidden: !openProjects,
-            })}
-          >
-        
           </div>
-         
-          <div className="bg-red-100">
+          <div
+            className={classNames(
+              "border-2 bg-white hover:bg-blue-600  min-w-full",
+              {
+                hidden: !openProjects,
+              }
+            )}
+          >
+            <div className="relative p-2 flex items-center border-slate-100 hover:text-white">
+              <div className="text-5xl flex items-center mr-2 fill-white">
+                <GoProject />
+              </div>
+              <div className="flex flex-col ">
+                <span className="font-medium px-2 mb-[2px]">bugtracker</span>
+                {/* <span className="px-2 font-light uppercase text-xs">bugtracker</span> */}
+                <div className="flex text-sm font-light">
+                  <Link className="px-2 hover:bg-green-600" to="">
+                    Add Issue
+                  </Link>
+                  <Link className="px-2 hover:bg-green-600" to="">
+                    Issue
+                  </Link>
+                </div>
+                <div className="text-xl absolute top-2 right-2">
+                  <a className="my-anchor-element">
+                    <IoSettingsSharp />
+                  </a>
+                  <Tooltip  style={{ paddingBlock: '0px', paddingInline: '6px', fontSize: '14px' }} anchorSelect=".my-anchor-element" place="top">
+                    Hello world!
+                  </Tooltip>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="">
             <div className="">
               <input
                 id="expandCollapseIssues"
@@ -132,20 +181,20 @@ function Dashboard(props) {
                 My Issues
               </label>
 
-              <p
-                className={classNames("text-black inline-block h-fit", {
-                  hidden: !openIssues,
-                })}
-              >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-                iusto quis reiciendis quod voluptatem rem?
-              </p>
+              <div
+                className={classNames(
+                  "p-8 border-2 bg-white hover:bg-blue-200 min-w-full",
+                  {
+                    hidden: !openIssues,
+                  }
+                )}
+              ></div>
             </div>
           </div>
         </div>
 
         <div
-          className={`transition-all duration-1000 border-4 bg-yellow-200 ${
+          className={`transition-all duration-1000 ${
             openUpdates ? "md:w-3/4" : "md:w-1/4"
           }`}
         >
@@ -170,18 +219,14 @@ function Dashboard(props) {
               </span>
               Recent Updates
             </label>
-            <p
-              className={classNames("text-black inline-block h-fit", {
-                hidden: !openUpdates,
-              })}
-            >
-              <div className="border-2">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Veritatis, tempora. Praesentium eveniet quia animi qui
-                distinctio similique? Tempora, odio libero! porro non distinctio
-                incidunt eius perspiciatis sint repellat quia, ipsum sit?
-              </div>
-            </p>
+            <div
+              className={classNames(
+                "p-8 border-2 bg-white hover:bg-blue-200 min-w-full",
+                {
+                  hidden: !openUpdates,
+                }
+              )}
+            ></div>
           </div>
         </div>
       </div>
