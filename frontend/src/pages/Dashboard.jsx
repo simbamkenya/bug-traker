@@ -149,10 +149,17 @@ function Dashboard(props) {
                   <a className="my-anchor-element">
                     <IoSettingsSharp />
                   </a>
-                  <Tooltip  style={{ paddingBlock: '0px', paddingInline: '6px', fontSize: '14px' }} anchorSelect=".my-anchor-element" place="top">
-                    Hello world!
+                  <Tooltip
+                    style={{
+                      paddingBlock: "0px",
+                      paddingInline: "6px",
+                      fontSize: "14px",
+                    }}
+                    anchorSelect=".my-anchor-element"
+                    place="top"
+                  >
+                    Project Setting
                   </Tooltip>
-                  
                 </div>
               </div>
             </div>
@@ -183,12 +190,104 @@ function Dashboard(props) {
 
               <div
                 className={classNames(
-                  "p-8 border-2 bg-white hover:bg-blue-200 min-w-full",
+                  "border-2 bg-white hover:bg-blue-200 min-w-full",
                   {
                     hidden: !openIssues,
                   }
                 )}
-              ></div>
+              >
+                <div className="p-2">
+                  <div className="">
+                    <div className="text-sm pb-2">
+                      <span className="font-medium mr-2">Filter:</span>
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                        Assigned to me (1)
+                      </span>
+                      <span className="px-2 py-[1.5] bg-green-200">
+                        Created by me (1)
+                      </span>
+                    </div>
+                    <div className="text-sm flex">
+                      <span className="font-medium mr-2">Due Date:</span>
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                        All
+                      </span>
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                        5 Days (0)
+                      </span>
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                        Due Today (0)
+                      </span>
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                        Overdue (0)
+                      </span>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <div class="border-b border-gray-200 shadow">
+                      <table class="divide-y divide-green-400 w-full">
+                        <thead class="bg-gray-50">
+                          <tr>
+                            <th class="px-6 py-2 text-xs text-left text-gray-500">
+                              ID
+                            </th>
+                            <th class="px-6 py-2 text-xs text-left text-gray-500">
+                              Bug Title
+                            </th>
+                            <th class="px-6 py-2 text-xs text-left text-gray-500">
+                              Bug Severity
+                            </th>
+                            <th class="px-6 py-2 text-xs text-left text-gray-500">
+                              Bug Priority
+                            </th>
+                            <th class="px-6 py-2 text-xs text-left text-gray-500">
+                              Status
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-300">
+                          {[
+                            {
+                              id: 1,
+                              title: "Nav unresponsive",
+                              severity: "critical",
+                              priority: "low",
+                            },
+                          ].map((bug) => (
+                            <tr key={bug.id} class="whitespace-nowrap">
+                              <td class="px-6 py-4 text-sm text-gray-500">
+                                {bug.id}
+                              </td>
+                              <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                  {bug.title}
+                                </div>
+                              </td>
+                              <td class="px-6 py-4">
+                                <div class="text-sm text-gray-500">
+                                  {bug.severity}
+                                </div>
+                              </td>
+                              <td class="px-6 py-4 text-sm text-gray-500">
+                                <span
+                                  className={`${
+                                    bug.priority === "high"
+                                      ? "bg-red-400"
+                                      : "bg-red-100"
+                                  } + px-2 rounded`}
+                                >
+                                  {bug.priority}
+                                </span>
+                              </td>
+                              <td class="px-6 py-4">active</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -220,13 +319,112 @@ function Dashboard(props) {
               Recent Updates
             </label>
             <div
-              className={classNames(
-                "p-8 border-2 bg-white hover:bg-blue-200 min-w-full",
-                {
-                  hidden: !openUpdates,
-                }
-              )}
-            ></div>
+              className={classNames(" min-w-full", {
+                hidden: !openUpdates,
+              })}
+            >
+              <div className="">
+                <div className="border-2 rounded bg-white hover:bg-blue-200 mb-2">
+                  <div className="border-b-2 p-2 font-bold">Fri Feb. 2024</div>
+                  <div className="flex p-2">
+                    <div className="flex flex-start  mr-2">
+                      <img
+                        className="w-16 h-16 rounded-full"
+                        src="https://i.pravatar.cc/100"
+                        alt=""
+                        srcset=""
+                      />
+                    </div>
+                    <div className="">
+                      <div className="py-2">
+                        Phares edited
+                        <span className="inline-block mx-[2px] px-[5.5px] text-xs bg-green-400 rounded-full">
+                          members
+                        </span>
+                        of this project
+                        <span className="ml-auto">a day ago</span>
+                      </div>
+                      <div className="font-medium">
+                        <Link to="" className="text-sm uppercase mr-2">
+                          Project name
+                        </Link>{" "}
+                        <span className="text-sm">issue title</span>
+                      </div>
+                      <span className="text-sm">comment content...</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="border-2 rounded bg-white hover:bg-blue-200">
+                  <div className="border-b-2 p-2 font-bold">
+                    Fri Feb. 04, 2024
+                  </div>
+                  <div className="flex p-2 border-b">
+                    <div className="flex flex-start  mr-2">
+                      <img
+                        className="w-16 h-16 rounded-full"
+                        src="https://i.pravatar.cc/100"
+                        alt=""
+                        srcset=""
+                      />
+                    </div>
+                    <div className="flex-1 bg-red-100">
+                      <div className="py-2">
+                        <div className="flex justify-between">
+                          <div className="">
+                            Phares added a new
+                            <span className="inline-block mx-[2px] text-xs px-[5.5px] bg-green-400 rounded-full">
+                              issue
+                            </span>
+                            of this project
+                          </div>
+                          <div className="px-4">a day ago</div>
+                        </div>
+                      </div>
+                      <div className="font-medium">
+                        <Link to="" className="text-sm uppercase mr-2">
+                          Project name
+                        </Link>
+                        <span className="text-sm">issue title</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex p-2">
+                    <div className="flex flex-start  mr-2">
+                      <img
+                        className="w-16 h-16 rounded-full"
+                        src="https://i.pravatar.cc/100"
+                        alt=""
+                        srcset=""
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <div className="py-2">
+                        <div className="flex justify-between">
+                          <div className="">
+                            Phares edited
+                            <span className="inline-block mx-[2px] text-xs px-[5.5px] bg-red-400 rounded-full">
+                              members
+                            </span>
+                            of this project
+                          </div>
+                          <div className="px-2">a day ago</div>
+                        </div>
+
+                        <div>
+                          <p className="font-medium text-sm py-[4px]">
+                            Projects name
+                          </p>
+                          <p className="text-sm">
+                            simba has been added to the project
+                          </p>
+                        </div>
+                        <div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
