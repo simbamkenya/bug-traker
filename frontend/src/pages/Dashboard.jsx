@@ -7,6 +7,7 @@ import { GoProject } from "react-icons/go";
 import { IoSettingsSharp } from "react-icons/io5";
 import { Tooltip } from "react-tooltip";
 
+
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);
@@ -324,7 +325,7 @@ function Dashboard(props) {
               })}
             >
               <div className="">
-                <div className="border-2 rounded bg-white hover:bg-blue-200 mb-2">
+                <div className="border-2 rounded bg-white mb-2">
                   <div className="border-b-2 p-2 font-bold">Fri Feb. 2024</div>
                   <div className="flex p-2">
                     <div className="flex flex-start  mr-2">
@@ -342,7 +343,7 @@ function Dashboard(props) {
                           members
                         </span>
                         of this project
-                        <span className="ml-auto">a day ago</span>
+                        <span className="ml-auto text-sm">a day ago</span>
                       </div>
                       <div className="font-medium">
                         <Link to="" className="text-sm uppercase mr-2">
@@ -354,7 +355,7 @@ function Dashboard(props) {
                     </div>
                   </div>
                 </div>
-                <div className="border-2 rounded bg-white hover:bg-blue-200">
+                <div className="border-2 rounded bg-white">
                   <div className="border-b-2 p-2 font-bold">
                     Fri Feb. 04, 2024
                   </div>
@@ -367,7 +368,7 @@ function Dashboard(props) {
                         srcset=""
                       />
                     </div>
-                    <div className="flex-1 bg-red-100">
+                    <div className="flex-1">
                       <div className="py-2">
                         <div className="flex justify-between">
                           <div className="">
@@ -377,7 +378,7 @@ function Dashboard(props) {
                             </span>
                             of this project
                           </div>
-                          <div className="px-4">a day ago</div>
+                          <div className="px-4 text-sm">a day ago</div>
                         </div>
                       </div>
                       <div className="font-medium">
@@ -407,7 +408,7 @@ function Dashboard(props) {
                             </span>
                             of this project
                           </div>
-                          <div className="px-2">a day ago</div>
+                          <div className="px-2 text-sm">a day ago</div>
                         </div>
 
                         <div>
