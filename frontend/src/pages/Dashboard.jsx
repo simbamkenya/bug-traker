@@ -7,7 +7,6 @@ import { GoProject } from "react-icons/go";
 import { IoSettingsSharp } from "react-icons/io5";
 import { Tooltip } from "react-tooltip";
 
-
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);

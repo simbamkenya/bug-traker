@@ -11,6 +11,12 @@ import Bugs from "./pages/Bugs";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DashLayout from "./layouts/DashLayout";
+import Projects from './pages/Projects/Index'
+
+import AddIssue from './pages/Projects/AddIssue';
+import GnattChart from "./pages/Projects/GnattChart";
+import Issues from "./pages/Projects/Issues";
+import Board from "./pages/Board"
 
 function App() {
   return (
@@ -22,6 +28,11 @@ function App() {
       <Route element={<DashLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/bugs" element={<Bugs />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/projects/addissue" element={<AddIssue />} />
+        <Route path="/projects/issues" element={<Issues />} />
+        <Route path="/projects/chart" element={<GnattChart />} />
+        <Route path="/projects/board" element={<Board />} />
       </Route>
     </Routes>
   );
