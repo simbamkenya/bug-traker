@@ -9,6 +9,8 @@ import {
   min,
   axisBottom,
   axisLeft,
+  timeFormat,
+  timeParse
 } from "d3";
 
 function Gantt(props) {
@@ -47,6 +49,9 @@ function Gantt(props) {
     // if (svg) {
     //   svg.selectAll("*").remove();
     // }
+    const format = timeFormat("%b %d");
+
+    console.log('date', format(data[0].start))
 
     const svg = select(chartRef.current)
       .append("svg")
@@ -74,7 +79,7 @@ function Gantt(props) {
       .attr("y", (d) => yScale(d.task))
       .attr("width", (d) => xScale(d.end) - xScale(d.start))
       .attr("height", yScale.bandwidth())
-      .attr("fill", "white");
+      .attr("fill", "#93C5FD");
 
     rect
       .append("text")
@@ -83,13 +88,13 @@ function Gantt(props) {
       .text((d) => d.task);
 
     // Add axes
-    const xAxis = axisBottom(xScale);
+    const xAxis = axisBottom(xScale).tickFormat(format);
     const yAxis = axisLeft(yScale);
 
     svg
       .append("g")
       .attr("transform", `translate(0,${height})`)
-      .call(xAxis.tickSize(-height).ticks(20))
+      .call(xAxis.tickSize(-height).ticks(12))
       .style("opacity", 0.3)
       .style("stroke-width", "0.3px");
 

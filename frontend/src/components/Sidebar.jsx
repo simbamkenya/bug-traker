@@ -25,13 +25,13 @@ function Sidebar(props) {
         <ul className="text-white">
           <Link
             to="/projects"
-            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black"
+            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black transition-all"
           >
             <span className="text-2xl">
               <IoMdHome />
             </span>
             <div
-              className={`overflow-hidden  whitespace-nowrap inline-block h-full text-lg font-medium transition-all ${
+              className={`overflow-hidden  whitespace-nowrap inline-block h-full text-md font-medium ${
                 sidebarOpen ? "w-0" : "w-24"
               }`}
             >
@@ -40,13 +40,13 @@ function Sidebar(props) {
           </Link>
           <Link
             to="/projects/addissue"
-            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black"
+            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black transition-all"
           >
             <span className="text-2xl">
               <IoMdAdd />
             </span>
             <div
-              className={`overflow-hidden  whitespace-nowrap inline-block h-full text-lg font-medium transition-all ${
+              className={`overflow-hidden  whitespace-nowrap inline-block h-full text-md font-medium ${
                 sidebarOpen ? "w-0" : "w-24"
               }`}
             >
@@ -55,13 +55,13 @@ function Sidebar(props) {
           </Link>
           <Link
             to="/projects/issues"
-            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black"
+            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black transition-all"
           >
             <span className="text-2xl">
               <CiViewList />
             </span>
             <div
-              className={`overflow-hidden whitespace-nowrap  inline-block h-full text-lg font-medium transition-all ${
+              className={`overflow-hidden whitespace-nowrap  inline-block h-full text-md font-medium  ${
                 sidebarOpen ? "w-0" : "w-24"
               }`}
             >
@@ -70,7 +70,7 @@ function Sidebar(props) {
           </Link>
           <Link
             to="/projects/board"
-            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black"
+            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black transition-all"
           >
             <span className="text-2xl">
               <span className="text-2xl rotate-180">
@@ -78,7 +78,7 @@ function Sidebar(props) {
               </span>
             </span>
             <div
-              className={`overflow-hidden  whitespace-nowrap inline-block h-full text-lg font-medium transition-all ${
+              className={`overflow-hidden  whitespace-nowrap inline-block h-full text-md font-medium ${
                 sidebarOpen ? "w-0" : "w-24"
               }`}
             >
@@ -87,13 +87,13 @@ function Sidebar(props) {
           </Link>
           <Link
             to="/projects/chart"
-            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black"
+            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black transition-all"
           >
             <span className="text-2xl">
               <FaChartGantt />
             </span>
             <div
-              className={`overflow-hidden whitespace-nowrap inline-block h-full text-lg font-medium transition-all ${
+              className={`overflow-hidden whitespace-nowrap inline-block h-full text-md font-medium ${
                 sidebarOpen ? "w-0" : "w-24"
               }`}
             >
