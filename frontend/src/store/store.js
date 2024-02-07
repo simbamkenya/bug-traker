@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import bugsReducer from "./features/bugsSlice";
+import issuesReducer from "./features/issuesSlice";
 
 export const store = configureStore({
     reducer: {
-        bugs: bugsReducer
+        bugs: issuesReducer
     }
 })

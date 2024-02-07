@@ -8,16 +8,16 @@ const initialState = {
     loading: true
 }
 
-export const bugsSlice = createSlice({
-    name: 'bugs',
+export const issuesSlice = createSlice({
+    name: 'issues',
     initialState,
     reducers : {
-        fetchBugs: (state, action) => {
+        fetchIssues: (state, action) => {
 
         }
     }
 });
 
 
-export const { fetchBugs } = bugsSlice.actions;
-export default bugsSlice.reducer;
+export const { fetchIssues } = issuesSlice.actions;
+export default issuesSlice.reducer;

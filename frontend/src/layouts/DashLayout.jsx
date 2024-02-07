@@ -8,7 +8,7 @@ import { GoProject } from "react-icons/go";
 function DashLayout(props) {
   const [dropVisible, setDropVisible] = useState(false);
   const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(true);
+    useComponentVisible(false);
   console.log(isComponentVisible);
   const searchRef = useRef(null)
 

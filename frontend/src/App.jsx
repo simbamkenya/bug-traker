@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { fetchBugs } from "./store/features/bugsSlice";
+import { fetchIssues } from "./store/features/issuesSlice";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import Welcome from "./pages/Welcome";

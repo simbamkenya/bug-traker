@@ -2,15 +2,18 @@ import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 import { Formik, Field, Form } from "formik";
+import Modal from "../../components/Modal";
 
 function Settings(props) {
   const searchRef = useRef();
+  const [openModal, setOpenModal] = useState(true)
+
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
       <Sidebar />
@@ -335,9 +338,10 @@ function Settings(props) {
             </TabPanel>
             <TabPanel>
               <h2 className="font-bold text-md py-2">Edit Issue Types</h2>
+              <Modal openModal={openModal} setOpenModal={setOpenModal} />
               <button
                 className="px-4  my-4 bg-blue-300 py-2  rounded-sm font-bold text-sm text-white hover:text-black hover:bg-blue-200 transition-all"
-                type="submit"
+                onClick={() => setOpenModal(true)}
               >
                 Add Issue Type
               </button>
@@ -389,8 +393,36 @@ function Settings(props) {
               </div>
             </TabPanel>
             <TabPanel>
-              <h2 className="font-bold text-md py-2">Edit Categories</h2>
-              <button className="px-4 bg-blue-300 py-2 my-4  rounded-sm font-bold text-sm text-white hover:text-black hover:bg-blue-200 transition-all">
+              <h2 className="font-bold text-md py-2 relative">
+                Edit Categories
+              </h2>
+              <Modal openModal={openModal} setOpenModal={setOpenModal}>
+                <Formik
+                  initialValues={{
+                    categogryName: "",
+                  }}
+                  onSubmit={async (values) => {}}
+                >
+                  <Form>
+                    <div className="flex flex-col gap-2 py-2 mb-2">
+                      <Field
+                        className="outline-none p-2 rounded max-w-96 border border-gray-200 rounded"
+                        id="categoryName"
+                        name="categoryName"
+                        placeholder="category"
+                      />
+                    </div>
+
+                    <button
+                      className="px-4 bg-blue-300 py-[6px] rounded-sm font-bold text-sm text-white mt-2 hover:text-black hover:bg-blue-200 transition-all"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
+                  </Form>
+                </Formik>
+              </Modal>
+              <button  onClick={() => setOpenModal(true) } className="px-4 bg-blue-300 py-2 my-4  rounded-sm font-bold text-sm text-white hover:text-black hover:bg-blue-200 transition-all">
                 Add Category
               </button>
               <div class="w-full">

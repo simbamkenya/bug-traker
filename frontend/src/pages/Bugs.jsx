@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 function Bugs(props) {
-  const bugs = useSelector((state) => state.bugs.data);
+  const bugs = useSelector((state) => state.issues.data);
 
   console.log("bugs", bugs);
 
