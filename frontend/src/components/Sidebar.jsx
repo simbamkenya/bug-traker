@@ -6,6 +6,7 @@ import { IoMdAdd } from "react-icons/io";
 import { CiViewList } from "react-icons/ci";
 import { CiViewBoard } from "react-icons/ci";
 import { MdBarChart } from "react-icons/md";
+import { IoSettings } from "react-icons/io5";
 
 
 function Sidebar(props) {
@@ -32,7 +33,7 @@ function Sidebar(props) {
             </span>
             <div
               className={`overflow-hidden  whitespace-nowrap inline-block h-full text-md font-medium ${
-                sidebarOpen ? "w-0" : "w-24"
+                sidebarOpen ? "w-0" : "w-32"
               }`}
             >
               Home
@@ -47,7 +48,7 @@ function Sidebar(props) {
             </span>
             <div
               className={`overflow-hidden  whitespace-nowrap inline-block h-full text-md font-medium ${
-                sidebarOpen ? "w-0" : "w-24"
+                sidebarOpen ? "w-0" : "w-32"
               }`}
             >
               Add Issue
@@ -62,7 +63,7 @@ function Sidebar(props) {
             </span>
             <div
               className={`overflow-hidden whitespace-nowrap  inline-block h-full text-md font-medium  ${
-                sidebarOpen ? "w-0" : "w-24"
+                sidebarOpen ? "w-0" : "w-32"
               }`}
             >
               Issues
@@ -79,7 +80,7 @@ function Sidebar(props) {
             </span>
             <div
               className={`overflow-hidden  whitespace-nowrap inline-block h-full text-md font-medium ${
-                sidebarOpen ? "w-0" : "w-24"
+                sidebarOpen ? "w-0" : "w-32"
               }`}
             >
               Board
@@ -94,10 +95,25 @@ function Sidebar(props) {
             </span>
             <div
               className={`overflow-hidden whitespace-nowrap inline-block h-full text-md font-medium ${
-                sidebarOpen ? "w-0" : "w-24"
+                sidebarOpen ? "w-0" : "w-32"
               }`}
             >
               Gantt Chart
+            </div>
+          </Link>
+          <Link
+            to="/projects/settings"
+            className="flex gap-2 py-4 px-4 hover:bg-gray-200 hover:text-black transition-all"
+          >
+            <span className="text-2xl">
+              <IoSettings />
+            </span>
+            <div
+              className={`overflow-hidden whitespace-nowrap inline-block h-full text-md font-medium ${
+                sidebarOpen ? "w-0" : "w-32"
+              }`}
+            >
+            Project setting
             </div>
           </Link>
         </ul>

@@ -16,7 +16,8 @@ import Projects from './pages/Projects/Index'
 import AddIssue from './pages/Projects/AddIssue';
 import GnattChart from "./pages/Projects/GnattChart";
 import Issues from "./pages/Projects/Issues";
-import Board from "./pages/Board"
+import Board from "./pages/Board";
+import Settings from "./pages/Projects/Settings";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/projects/issues" element={<Issues />} />
         <Route path="/projects/chart" element={<GnattChart />} />
         <Route path="/projects/board" element={<Board />} />
+        <Route path="/projects/settings" element={<Settings />} />
       </Route>
     </Routes>
   );
