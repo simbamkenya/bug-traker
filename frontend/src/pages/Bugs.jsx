@@ -30,7 +30,7 @@ function Bugs(props) {
                        <div class="text-sm text-gray-900">{bug.title}</div>
                      </td>
                      <td class="px-6 py-4">
-                       <div class="text-sm text-left text-gray-500">
+                       <div class="text-sm text-gray-500">
                         {bug.severity}
                        </div>
                      </td>

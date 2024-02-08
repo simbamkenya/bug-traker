@@ -5,7 +5,7 @@ function AddIssue(props) {
     const [modal, setModal] = useState(false)
     return (
         <div>
-            oooooo
+            
         </div>
     );
 }
