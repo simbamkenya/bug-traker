@@ -4,3 +4,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.w-md-editor-text {
+  padding: 4px;
+}
+
+.w-md-editor-text textarea {
+  /* padding: 0; */
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 80%;
+  width: 100%;
+  resize: none;
+}
