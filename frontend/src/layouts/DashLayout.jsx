@@ -151,7 +151,7 @@ function DashLayout(props) {
             >
               <ul className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm">
                 <li className="whitespace-nowrap rounded-sm  text-sm text-left px-2 py-[4px] hover:bg-gray-200">
-                  <Link className="">Add Item</Link>
+                  <Link className="">Add Issue</Link>
                 </li>
                 <li className="whitespace-nowrap rounded-sm  text-left px-2 py-[4px] text-sm hover:bg-gray-200">
                   <Link>Add Project</Link>

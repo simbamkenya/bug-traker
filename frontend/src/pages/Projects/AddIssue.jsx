@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
+import { Form, Formik, Field } from "formik";
+import { FaCaretLeft } from "react-icons/fa6";
+import MDEditor from "@uiw/react-md-editor";
+import Mentions from "rc-mentions";
+const { Option } = Mentions;
+
 
 function AddIssue(props) {
   const searchRef = useRef(null);
+  const [openIssueCategory, setOpenIssueCategory] = useState(false);
+  const [value, setValue] = useState("**Hello world!!!**");
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
       <Sidebar />
@@ -24,7 +32,7 @@ function AddIssue(props) {
                 id="username"
                 type="text"
                 ref={searchRef}
-                onClick={""}
+                onClick={() => {}}
                 placeholder="Search..."
               />
               <div
@@ -68,7 +76,96 @@ function AddIssue(props) {
             </div>
           </div>
         </div>
-        <div className="border-2 m-h-48 mx-4 my-2 rounded"></div>
+        <div className="m-h-48 mx-4 my-2 rounded">
+          <div>
+            <Formik
+              initialValues={{
+                projectName: "",
+                projectKey: "",
+              }}
+              onSubmit={async (values) => {}}
+            >
+              <Form>
+                <div className="flex flex-col gap-2 py-2 mb-2">
+                  <Field
+                    className="outline-none p-2 rounded w-full border border-gray-200 rounded text-sm "
+                    id="projecttName"
+                    name="projectName"
+                    placeholder="Subject"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex flex-col flex-start">
+                    <span
+                      for="countries"
+                      class="block mb-2 text-sm font-light text-gray-900 dark:text-gray-400"
+                    >
+                      Issue Category
+                    </span>
+                    <button
+                      onClick={() => setOpenIssueCategory(!openIssueCategory)}
+                      className="border border-gray-300 py-2 px-4 max-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                    >
+                      <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
+                        <FaCaretLeft />
+                      </div>
+                    </button>
+                    <div
+                      className={`bg-white max-w-48 p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
+                        openIssueCategory ? "block" : "hidden"
+                      }`}
+                    >
+                      <div className="mt-[2px]">
+                        <div className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]">
+                          Text One
+                        </div>
+                        <div className="hover:bg-gray-300  text-gray-800 text-sm  rounded-md px-2 py-[4px]">
+                          Text Two
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    className="px-6 py-8 bg-blue-300 py-[6px] rounded-sm font-bold text-md text-white mt-6 hover:text-black hover:bg-blue-200 transition-all"
+                    type="submit"
+                  >
+                    Add
+                  </button>
+                </div>
+              </Form>
+            </Formik>
+          </div>
+          <div className="rounded border border-gray-200 min-h-48 my-4">
+            <div className="container">
+              {/* <MDEditor
+               
+              
+              value={value} onChange={setValue} /> */}
+              <MDEditor
+                components={{
+                  textarea : (props) => {
+                    console.log('ii', props.value)
+                    return (
+                      <Mentions
+                        value={props.value}
+                        onChange={(newValue) => setValue(newValue)}
+                      >
+                        <Option value="light">Light</Option>
+                        <Option value="bamboo">Bamboo</Option>
+                        <Option value="cat">Cat</Option>
+                      </Mentions>
+                    );
+                  },
+                }}
+                //height={200}
+                value={value}
+                onChange={setValue}
+              />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
