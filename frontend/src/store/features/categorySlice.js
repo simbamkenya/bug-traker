@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
 import { data } from "../../data";
+import axios from "axios";
 
 //console.log('data', data)
 const initialState = {
@@ -35,14 +35,14 @@ export const categorySlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchProjectById.pending, (state, action) => {
+        builder.addCase(fetchCategoryById.pending, (state, action) => {
             state.loading = true
          })
-         .addCase(fetchProjectById.fulfilled, (state, action) => {
+         .addCase(fetchCategoryById.fulfilled, (state, action) => {
             state.loading = false
             state.data = action.payload.project
          })
-         .addCase(fetchProjectById.rejected, (state, action) => {
+         .addCase(fetchCategoryById.rejected, (state, action) => {
             state.loading = true
          })
     }

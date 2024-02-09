@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const users = [
     {

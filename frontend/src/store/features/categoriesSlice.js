@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
-import { data } from "../../data";
+import { data } from "../../data"
+import axios from "axios";
+
 
 //console.log('data', data)
 const initialState = {
@@ -13,6 +14,7 @@ export const addCategory = createAsyncThunk(
     'categories/addCategory',
     async(data, thunkAPI) => {
         try {
+            console.log('addcat', data)
             const res = await axios.post(`${BASE_URL}/api/category`, data)
             return res.data
         } catch (error) {

@@ -3,16 +3,34 @@ import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
-
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 import { Formik, Field, Form } from "formik";
 import Modal from "../../components/Modal";
 
+import { addCategory } from "../../store/features/categoriesSlice";
+import { useDispatch } from "react-redux";
+
+
+import { addIssue } from "../../store/features/issuesSlice";
+import { addIssueType } from "../../store/features/issueTypesSlice";
+const COLORS = [
+  {name: 'black', color: '#393939'},
+  {name: 'ferrariRed', color:  '#EA2C00'},
+  {name: 'chineseOrange', color: '#EA733B'},
+  {name: 'chinesePink', color: '#E07B9A'},
+  {name: 'coolGrey', color: '#B7B186'},
+  {name: 'moonStone', color: '#BD5B3B'},
+  {name: 'oceanGreen', color:'#4CAF93'},
+  {name: 'citron', color: '#A1AF2F'},
+  {name: 'goldenrod', color: '#DC9925'},
+  {name: 'magicPotion', color: '#3FF5CA'}
+]
 function Settings(props) {
   const searchRef = useRef();
-  const [openModal, setOpenModal] = useState(true)
+  const [openModal, setOpenModal] = useState(true);
+  const dispatch = useDispatch();
 
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
@@ -338,7 +356,96 @@ function Settings(props) {
             </TabPanel>
             <TabPanel>
               <h2 className="font-bold text-md py-2">Edit Issue Types</h2>
-              <Modal openModal={openModal} setOpenModal={setOpenModal} />
+              <Modal
+                title="Add Issue Type"
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+              >
+                <Formik
+                  initialValues={{
+                    issueType: "",
+                    issueColor: "",
+                  }}
+                  validate={(values) => {
+                    const errors = {};
+                    if (!values.issueType) {
+                      errors.issueType = "Issue type is required";
+                    }
+                    return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                    console.log('values issue types', values)
+                    dispatch(addIssueType(values));
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                  }) => (
+                    <Form onSubmit={handleSubmit}>
+                      {console.log('ppp', values)}
+                      <div className="flex flex-col gap-2 py-2 mb-2">
+                        <p className="text-red-200 text-md">
+                          {errors.issueType &&
+                            touched.issueType &&
+                            errors.issueType}
+                        </p>
+
+                        <Field
+                          className="outline-none p-2 rounded max-w-96 border border-gray-200 rounded"
+                          id="issueType"
+                          name="issueType"
+                          placeholder="issue type"
+                          value={values.issueType}
+                          onChange={handleChange}
+                        />
+                        <p className="text-xs">
+                          Background color for issue type
+                        </p>
+                        <div className="flex gap-2 flex-wrap">
+                          {COLORS.map(({ color }) => {
+                            return (
+                              <div className="flex items-center">
+                                <label
+                                  id="issueColor"
+                                  name="issueColor"
+                                  style={{ backgroundColor: color }}
+                                  className={`px-4 py-[1.5px] inline-block text-sm text-white rounded-full `}
+                                >
+                                  Issue type list
+                                </label>
+                                {/* <label className={`bg-[#393939P] px-2 inline-block rounded-sm`}>Issue type list</label> */}
+                                <Field
+                                  className="h-4 w-4 outline-none px-4 py-2 rounded max-w-96 border border-gray-200 rounded-full ml-2"
+                                  id="issueColor"
+                                  name="issueColor"
+                                  type="radio"
+                                  placeholder="category name"
+                                  value={color}
+                                  onChange={handleChange}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <button
+                        className="px-4 bg-blue-300 py-[6px] rounded-sm font-bold text-sm text-white mt-2 hover:text-black hover:bg-blue-200 transition-all"
+                        type="submit"
+                      >
+                        Save
+                      </button>
+                    </Form>
+                  )}
+                </Formik>
+              </Modal>
               <button
                 className="px-4  my-4 bg-blue-300 py-2  rounded-sm font-bold text-sm text-white hover:text-black hover:bg-blue-200 transition-all"
                 onClick={() => setOpenModal(true)}
@@ -396,33 +503,70 @@ function Settings(props) {
               <h2 className="font-bold text-md py-2 relative">
                 Edit Categories
               </h2>
-              <Modal openModal={openModal} setOpenModal={setOpenModal}>
+              <Modal
+                title="Add Category"
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+              >
                 <Formik
                   initialValues={{
-                    categogryName: "",
+                    categoryName: "",
                   }}
-                  onSubmit={async (values) => {}}
+                  validate={(values) => {
+                    const errors = {};
+                    if (!values.categoryName) {
+                      errors.categoryName = "Category name is required";
+                    }
+                    return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                    dispatch(addCategory(values));
+                  }}
                 >
-                  <Form>
-                    <div className="flex flex-col gap-2 py-2 mb-2">
-                      <Field
-                        className="outline-none p-2 rounded max-w-96 border border-gray-200 rounded"
-                        id="categoryName"
-                        name="categoryName"
-                        placeholder="category"
-                      />
-                    </div>
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                  }) => (
+                    <Form onSubmit={handleSubmit}>
+                      <div className="flex flex-col gap-2 py-2 mb-2">
+                        <p className="text-red-200 text-md">
+                          {errors.categoryName &&
+                            touched.categoryName &&
+                            errors.categoryName}
+                        </p>
+                        <Field
+                          className="outline-none p-2 rounded max-w-96 border border-gray-200 rounded"
+                          id="categoryName"
+                          name="categoryName"
+                          placeholder="category name"
+                          value={values.categoryName}
+                          onChange={handleChange}
+                        />
+                        <p className="text-xs">
+                          set it to issues, can be different for each project
+                        </p>
+                      </div>
 
-                    <button
-                      className="px-4 bg-blue-300 py-[6px] rounded-sm font-bold text-sm text-white mt-2 hover:text-black hover:bg-blue-200 transition-all"
-                      type="submit"
-                    >
-                      Submit
-                    </button>
-                  </Form>
+                      <button
+                        className="px-4 bg-blue-300 py-[6px] rounded-sm font-bold text-sm text-white mt-2 hover:text-black hover:bg-blue-200 transition-all"
+                        type="submit"
+                      >
+                        Save
+                      </button>
+                    </Form>
+                  )}
                 </Formik>
               </Modal>
-              <button  onClick={() => setOpenModal(true) } className="px-4 bg-blue-300 py-2 my-4  rounded-sm font-bold text-sm text-white hover:text-black hover:bg-blue-200 transition-all">
+              <button
+                onClick={() => setOpenModal(true)}
+                className="px-4 bg-blue-300 py-2 my-4  rounded-sm font-bold text-sm text-white hover:text-black hover:bg-blue-200 transition-all"
+              >
                 Add Category
               </button>
               <div class="w-full">

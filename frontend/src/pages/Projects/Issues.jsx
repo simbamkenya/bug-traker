@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 function Issues(props) {
   const searchRef = useRef();
-  const bugs = useSelector((state) => state.bugs.data)
+  const bugs = useSelector((state) => state.issues.data)
 
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
