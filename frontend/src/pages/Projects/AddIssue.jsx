@@ -11,17 +11,44 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import Mentions from "rc-mentions";
+import { addIssue } from "../../store/features/issuesSlice";
 const { Option } = Mentions;
+import { useSelector, useDispatch } from "react-redux";
 
 function AddIssue(props) {
   const searchRef = useRef(null);
   const [openIssueCategory, setOpenIssueCategory] = useState(false);
+  const [openIssueType, setOpenIssueType] = useState(false);
+  const [category, setCategory] = useState("");
+  const [issueType, setIssueType] = useState("");
+  const [status, setStatus] = useState("");
+
+  const users = useSelector((state) => state.users.data);
+  console.log("users", users);
+  const categories = [
+    { category: "cat one" },
+    { category: "cat two" },
+    { category: "cat three" },
+  ];
+  const issuesTypes = [
+    { issueType: "type one" },
+    { issueType: "type two" },
+    { issueType: "type three" },
+  ];
+  const statuses = [
+    { status: "Open", color: "#ED8077" },
+    { status: "In Progress", color: "#4488C5" },
+    { status: "Closed", color: "#A1AF2F" },
+    { status: "Revoved", color: "#92CDC3" },
+  ];
 
   const [openStatus, setOpenStatus] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
-  const [openAssignee, setAssignee] = useState(false);
+  const [openAssignee, setOpenAssignee] = useState(false);
+  const [assignee, setAssignee] = useState("");
 
   const [startDate, setStartDate] = useState(new Date());
+  const dispatch = useDispatch();
 
   const [value, setValue] = useState("**Hello world!!!**");
   return (
@@ -86,198 +113,265 @@ function AddIssue(props) {
             </div>
           </div>
         </div>
-        <div className="m-h-48 mx-4 my-2 rounded">
+        <div className="m-h-48 mx-4 my-2">
           <div>
             <Formik
               initialValues={{
-                projectName: "",
-                projectKey: "",
+                subject: "subject one",
+                date: startDate,
+                description: value,
+                status: "",
               }}
-              onSubmit={async (values) => {}}
+              validate={(values) => {
+                const errors = {};
+                if (!values.subject) {
+                  errors.subject = "Subject is required";
+                }
+                return errors;
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                let content = { ...values, value };
+                console.log("issue submit", content);
+                dispatch(addIssue(content));
+              }}
             >
-              <Form>
-                <div className="flex flex-col gap-2 py-2 mb-2">
-                  <Field
-                    className="outline-none p-2 rounded w-full border border-gray-200 rounded text-sm "
-                    id="projecttName"
-                    name="projectName"
-                    placeholder="Subject"
-                  />
-                </div>
-
-                <div className="">
-                  <div className="flex flex-col flex-start">
+              {({
+                values,
+                errors,
+                handleChange,
+                handleSubmit,
+                setFieldValue,
+              }) => (
+                <Form onSubmit={handleSubmit}>
+                  {console.log("form values", values)}
+                  <div className="flex flex-col gap-2 py-2 mb-2">
                     <span
-                      for="countries"
-                      class="block mb-2 text-sm font-light text-gray-900 dark:text-gray-400"
+                      for="subject"
+                      class="block mb-2 text-md font-light  text-gray-900 dark:text-gray-400"
                     >
-                      Issue Type
+                      Subject *
                     </span>
-                    <div className="relative">
-                      <button
-                        onClick={() => setOpenIssueCategory(!openIssueCategory)}
-                        className="border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                    <Field
+                      className="outline-none p-2 rounded w-full border border-gray-200 rounded text-sm "
+                      id="subject"
+                      name="subject"
+                      placeholder="Subject"
+                      value={values.subject}
+                      onchange={handleChange}
+                    />
+                  </div>
+
+                  <div className="">
+                    <div className="flex flex-col flex-start">
+                      <span
+                        for="countries"
+                        class="block mb-2 text-sm font-light text-gray-900 dark:text-gray-400"
                       >
-                        <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
-                          <FaCaretLeft />
-                        </div>
-                      </button>
-                      <div
-                        className={`absolute bg-white min-w-48 p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                          openIssueCategory ? "block" : "hidden"
-                        }`}
-                      >
-                        <div className="mt-[2px]">
-                          <div className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]">
-                            Text One
+                        Issue Type
+                      </span>
+                      <div className="relative z-40">
+                        <button
+                          onClick={() =>
+                            setOpenIssueCategory(!openIssueCategory)
+                          }
+                          className="flex border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                        >
+                          {issueType}
+                          <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
+                            <FaCaretLeft />
                           </div>
-                          <div className="hover:bg-gray-300  text-gray-800 text-sm  rounded-md px-2 py-[4px]">
-                            Text Two
+                        </button>
+                        <div
+                          className={`absolute bg-white min-w-48 p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
+                            openIssueCategory ? "block" : "hidden"
+                          }`}
+                        >
+                          <div className="mt-[2px]">
+                            {issuesTypes.map(({ issueType }) => (
+                              <div
+                                onClick={() => {
+                                  setIssueType(issueType);
+                                  setOpenIssueCategory(false);
+                                }}
+                                className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
+                              >
+                                {issueType}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      className="px-6 py-8 bg-blue-300 py-[6px] rounded-sm font-bold text-md text-white mt-6 hover:text-black hover:bg-blue-200 transition-all"
+                      type="submit"
+                    >
+                      Add
+                    </button>
+                  </div>
+                  <div className="rounded border border-gray-200 min-h-48 my-4">
+                    <div className="container">
+                      <MDEditor
+                        components={{
+                          textarea: (props) => {
+                            return (
+                              <Mentions
+                                value={props.value}
+                                onChange={(newValue) => setValue(newValue)}
+                              >
+                                <Option value="light">Light</Option>
+                                <Option value="bamboo">Bamboo</Option>
+                                <Option value="cat">Cat</Option>
+                              </Mentions>
+                            );
+                          },
+                        }}
+                        //height={200}
+                        value={value}
+                        onChange={setValue}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="flex-1 flex items-center border-t-2 border-b-2 border-gray-300 py-4">
+                      <span className="px-2 font-sm text-md">Status</span>
+                      <div className="relative z-40 ml-auto">
+                        <button
+                          onClick={() => setOpenStatus(!openStatus)}
+                          className="flex items-center gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                        >
+                          <div
+                            className="w-3 h-3 rounded-full"
+                            style={{
+                              backgroundColor: statuses.find(
+                                (item) => item?.status == status
+                              )?.color,
+                            }}
+                          ></div>
+
+                          {status}
+                          <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
+                            <FaCaretLeft />
+                          </div>
+                        </button>
+                        <div
+                          className={`absolute bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
+                            openStatus ? "block" : "hidden"
+                          }`}
+                        >
+                          <div className="mt-[2px]">
+                            {statuses.map(({ status, color }) => (
+                              <div
+                                onClick={() => {
+                                  setStatus(status);
+                                  setOpenStatus(false);
+                                }}
+                                className="flex items-center gap-2 hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
+                              >
+                                <div
+                                  className="w-3 h-3 rounded-full"
+                                  style={{ backgroundColor: color }}
+                                ></div>
+                                {status}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1 flex items-center border-t-2 border-b-2 border-gray-300 py-4">
+                      <span className="px-2 font-sm text-md">Category</span>
+                      <div className="relative z-40 ml-auto">
+                        <button
+                          // onClick={() => setOpenIssueCategory(!openIssueCategory)}
+                          onClick={() => setOpenCategory(!openCategory)}
+                          className="flex gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                        >
+                          {category}
+                          <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
+                            <FaCaretLeft />
+                          </div>
+                        </button>
+                        <div
+                          className={`absolute bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
+                            openCategory ? "block" : "hidden"
+                          }`}
+                        >
+                          {category}
+                          <div className="mt-[2px]">
+                            {categories.map(({ category }) => (
+                              <div
+                                onClick={() => {
+                                  setCategory(category);
+                                  setOpenCategory(false);
+                                }}
+                                className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
+                              >
+                                {category}
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
+                  <div className="flex gap-8">
+                    <div className="flex flex-1 items-center border-t-2 border-b-2 border-gray-300 py-4">
+                      <span className="px-2 font-sm text-md">Assignee</span>
+                      <div className="relative ml-auto">
+                        <button
+                          onClick={() => setOpenAssignee(!openAssignee)}
+                          className="flex gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                        >
+                          {assignee.nickname}
+                          <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
+                            <FaCaretLeft />
+                          </div>
+                        </button>
+                        <div
+                          className={`absolute z-999 bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
+                            openAssignee ? "block" : "hidden"
+                          }`}
+                        >
+                          <div className="mt-[2px]">
+                            {users.map((user) => (
+                              <div
+                                onClick={() => {
+                                  setAssignee(user);
+                                  setOpenAssignee(false);
+                                }}
+                                className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
+                              >
+                                {user.nickname}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-1 items-center border-t-2 border-b-2 border-gray-300 py-4">
+                      <span className="px-2 font-sm text-md">Due Date</span>
+                      <div className="relative ml-auto hover:z-50">
+                        <DatePicker
+                          name="date"
+                          value={values.date}
+                          onChange={(date) => setFieldValue("date", date)}
+                          selected={values.date}
+                        />
+                      </div>
+                    </div>
+                  </div>
                   <button
                     className="px-6 py-8 bg-blue-300 py-[6px] rounded-sm font-bold text-md text-white mt-6 hover:text-black hover:bg-blue-200 transition-all"
                     type="submit"
                   >
                     Add
                   </button>
-                </div>
-              </Form>
+                </Form>
+              )}
             </Formik>
           </div>
-          <div className="rounded border border-gray-200 min-h-48 my-4">
-            <div className="container">
-              {/* <MDEditor
-               
-              
-              value={value} onChange={setValue} /> */}
-              <MDEditor
-                components={{
-                  textarea: (props) => {
-                    console.log("ii", props.value);
-                    return (
-                      <Mentions
-                        value={props.value}
-                        onChange={(newValue) => setValue(newValue)}
-                      >
-                        <Option value="light">Light</Option>
-                        <Option value="bamboo">Bamboo</Option>
-                        <Option value="cat">Cat</Option>
-                      </Mentions>
-                    );
-                  },
-                }}
-                //height={200}
-                value={value}
-                onChange={setValue}
-              />
-            </div>
-          </div>
-          <div className="flex gap-8">
-            <div className="flex-1 flex items-center border-t-2 border-b-2 border-gray-300 py-4">
-              <span className="px-2 font-sm text-md">Status</span>
-              <div className="relative z-40 ml-auto">
-                <button
-                  onClick={() => setOpenStatus(!openStatus)}
-                  className="border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
-                >
-                  <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
-                    <FaCaretLeft />
-                  </div>
-                </button>
-                <div
-                  className={`absolute bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                    openStatus ? "block" : "hidden"
-                  }`}
-                >
-                  <div className="mt-[2px]">
-                    <div className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]">
-                      Text One
-                    </div>
-                    <div className="hover:bg-gray-300  text-gray-800 text-sm  rounded-md px-2 py-[4px]">
-                      Text Two
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 flex items-center border-t-2 border-b-2 border-gray-300 py-4">
-              <span className="px-2 font-sm text-md">Category</span>
-              <div className="relative z-40 ml-auto">
-                <button
-                  // onClick={() => setOpenIssueCategory(!openIssueCategory)}
-                  onClick={() => setOpenCategory(!openCategory)}
-                  className="border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
-                >
-                  <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
-                    <FaCaretLeft />
-                  </div>
-                </button>
-                <div
-                  className={`absolute bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                    openCategory ? "block" : "hidden"
-                  }`}
-                >
-                  <div className="mt-[2px]">
-                    <div className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]">
-                      Cat One
-                    </div>
-                    <div className="hover:bg-gray-300  text-gray-800 text-sm  rounded-md px-2 py-[4px]">
-                      Cat Two
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-8">
-            <div className="flex flex-1 items-center border-t-2 border-b-2 border-gray-300 py-4">
-              <span className="px-2 font-sm text-md">Assignee</span>
-              <div className="relative ml-auto">
-                <button
-                  onClick={() => setAssignee(!openAssignee)}
-                  className="border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
-                >
-                  <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
-                    <FaCaretLeft />
-                  </div>
-                </button>
-                <div
-                  className={`absolute z-999 bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                    openAssignee ? "block" : "hidden"
-                  }`}
-                >
-                  <div className="mt-[2px]">
-                    <div className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]">
-                      Text One
-                    </div>
-                    <div className="hover:bg-gray-300  text-gray-800 text-sm  rounded-md px-2 py-[4px]">
-                      Text Two
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-1 items-center border-t-2 border-b-2 border-gray-300 py-4">
-              <span className="px-2 font-sm text-md">Due Date</span>
-              <div className="relative ml-auto z-40">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                />
-              </div>
-            </div>
-          </div>
-          <button
-            className="px-6 py-8 bg-blue-300 py-[6px] rounded-sm font-bold text-md text-white mt-6 hover:text-black hover:bg-blue-200 transition-all"
-            type="submit"
-          >
-            Add
-          </button>
         </div>
       </main>
     </div>

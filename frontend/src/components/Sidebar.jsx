@@ -12,7 +12,7 @@ import { IoSettings } from "react-icons/io5";
 function Sidebar(props) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     return (
-        <sidebar className="bg-blue-300 min-h-screen">
+        <aside className="bg-blue-300 min-h-screen">
         <div>
           <div
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -117,7 +117,7 @@ function Sidebar(props) {
             </div>
           </Link>
         </ul>
-      </sidebar>
+      </aside>
     );
 }
 

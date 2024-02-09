@@ -42,7 +42,7 @@ function DashLayout(props) {
                   id="username"
                   type="text"
                   ref={searchRef}
-                  onClick={''}
+                  onClick={() => {}}
                   placeholder="Search..."
                 />
                 <div
