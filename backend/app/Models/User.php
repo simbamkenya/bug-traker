@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function teams(){
         return $this->hasMany(Team::class);
     }
+    
+    public function issues(){
+        return $this->hasMany(Issue::class, 'assignee', 'id');
+    }
 }
