@@ -12,6 +12,7 @@ const initialState = {
 export const addProject = createAsyncThunk(
     'projects/addProject',
     async(data, thunkAPI) => {
+        console.log('incomeing project', data)
         try {
             const res = await axios.post(`${BASE_URL}/api/project`, data)
             return res.data

@@ -50,7 +50,12 @@ function AddIssue(props) {
   const [startDate, setStartDate] = useState(new Date());
   const dispatch = useDispatch();
 
-  const [value, setValue] = useState("**Hello world!!!**");
+  const [value, setValue] = useState("Type here...");
+
+  const handleNewIssueSubmission = (values, { setSubmitting }) => {
+    let content = { ...values, description: value, status: status, assignee: assignee.userId };
+    dispatch(addIssue(content));
+  };
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
       <Sidebar />
@@ -129,11 +134,7 @@ function AddIssue(props) {
                 }
                 return errors;
               }}
-              onSubmit={(values, { setSubmitting }) => {
-                let content = { ...values, value };
-                console.log("issue submit", content);
-                dispatch(addIssue(content));
-              }}
+              onSubmit={handleNewIssueSubmission}
             >
               {({
                 values,
@@ -147,7 +148,7 @@ function AddIssue(props) {
                   <div className="flex flex-col gap-2 py-2 mb-2">
                     <span
                       for="subject"
-                      class="block mb-2 text-md font-light  text-gray-900 dark:text-gray-400"
+                      className="block mb-2 text-md text-gray-900"
                     >
                       Subject *
                     </span>
@@ -165,7 +166,7 @@ function AddIssue(props) {
                     <div className="flex flex-col flex-start">
                       <span
                         for="countries"
-                        class="block mb-2 text-sm font-light text-gray-900 dark:text-gray-400"
+                        class="block mb-2 text-md text-gray-900"
                       >
                         Issue Type
                       </span>

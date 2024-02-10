@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { GoProject } from "react-icons/go";
 import { IoSettingsSharp } from "react-icons/io5";
 import { Tooltip } from "react-tooltip";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
@@ -15,6 +16,7 @@ function Dashboard(props) {
   const [showCancelIcon, setShowCancelIcon] = useState(true);
 
   let searchRef = useRef(null);
+  let navigate = useNavigate()
 
   const focus = () => {
     console.log("clicked", searchRef.current.focus());
@@ -27,9 +29,20 @@ function Dashboard(props) {
     <div className="min-h-screen bg-gray-100">
       <div className="flex justify-center py-4">
         <span className="font-bold text-2xl mr-2">Simba</span>
-        <div className="text-3xl h-8 w-8 p-[0.5] rounded-full border-2 flex items-center justify-center">
+        <div onClick={()=> navigate('/space/settings')} className="my-anchor-element text-3xl h-8 w-8 p-[0.5] rounded-full border-2 flex items-center justify-center hover:bg-blue-200 hover:text-white">
           <IoIosSettings />
         </div>
+        <Tooltip
+          style={{
+            paddingBlock: "0px",
+            paddingInline: "6px",
+            fontSize: "14px",
+          }}
+          anchorSelect=".my-anchor-element"
+          place="top"
+        >
+          Space Setting
+        </Tooltip>
       </div>
       <div className="flex md:flex-row flex-col gap-2 py-8 px-4">
         <div

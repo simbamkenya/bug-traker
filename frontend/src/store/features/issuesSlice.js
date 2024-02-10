@@ -6,6 +6,7 @@ export const addIssue= createAsyncThunk(
     'issues/addIssue',
     async(data, thunkAPI) => {
         try {
+            console.log('income new issue', data)
             const res = await axios.post(`${BASE_URL}/api/issues`, data)
             return res.data
         } catch (error) {

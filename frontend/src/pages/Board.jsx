@@ -134,7 +134,7 @@ function Board(props) {
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-red-400 rounded-full mr-2 inline-block"></div>
-                Lorem ipsum
+                Open 
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
                   2
                 </span>
@@ -175,7 +175,7 @@ function Board(props) {
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-blue-400 rounded-full mr-2 inline-block"></div>
-                Lorem ipsum
+                In Progress
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
                   2
                 </span>
@@ -185,7 +185,7 @@ function Board(props) {
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-green-400 rounded-full mr-2 inline-block"></div>
-                Lorem ipsum
+                Closed
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
                   2
                 </span>
@@ -195,7 +195,7 @@ function Board(props) {
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-yellow-200 rounded-full mr-2 inline-block"></div>
-                Lorem ipsum
+                Revoked
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
                   2
                 </span>

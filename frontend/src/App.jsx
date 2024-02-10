@@ -18,6 +18,13 @@ import GnattChart from "./pages/Projects/GnattChart";
 import Issues from "./pages/Projects/Issues";
 import Board from "./pages/Board";
 import Settings from "./pages/Projects/Settings";
+import SpaceLayout from "./layouts/SpaceLayout";
+import SpaceSetting from "./pages/spaces/Settings";
+
+import ProjectSetting from "./pages/spaces/ProjectSetting";
+import TeamSetting from "./pages/spaces/TeamSetting";
+import UserSetting from "./pages/spaces/UserSetting";
+
 
 function App() {
   return (
@@ -35,6 +42,12 @@ function App() {
         <Route path="/projects/chart" element={<GnattChart />} />
         <Route path="/projects/board" element={<Board />} />
         <Route path="/projects/settings" element={<Settings />} />
+      </Route>
+      <Route element={<SpaceLayout/>}>
+        <Route path="/space/settings" element={<SpaceSetting />}/>
+        <Route path="/space/project" element={<ProjectSetting />}/>
+        <Route path="/space/team" element={<TeamSetting />}/>
+        <Route path="/space/user" element={<UserSetting />}/>
       </Route>
     </Routes>
   );

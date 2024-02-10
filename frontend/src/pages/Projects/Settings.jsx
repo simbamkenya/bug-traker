@@ -12,25 +12,29 @@ import Modal from "../../components/Modal";
 import { addCategory } from "../../store/features/categoriesSlice";
 import { useDispatch } from "react-redux";
 
-
 import { addIssue } from "../../store/features/issuesSlice";
 import { addIssueType } from "../../store/features/issueTypesSlice";
+import { addProject } from "../../store/features/projectsSlice";
 const COLORS = [
-  {name: 'black', color: '#393939'},
-  {name: 'ferrariRed', color:  '#EA2C00'},
-  {name: 'chineseOrange', color: '#EA733B'},
-  {name: 'chinesePink', color: '#E07B9A'},
-  {name: 'coolGrey', color: '#B7B186'},
-  {name: 'moonStone', color: '#BD5B3B'},
-  {name: 'oceanGreen', color:'#4CAF93'},
-  {name: 'citron', color: '#A1AF2F'},
-  {name: 'goldenrod', color: '#DC9925'},
-  {name: 'magicPotion', color: '#3FF5CA'}
-]
+  { name: "black", color: "#393939" },
+  { name: "ferrariRed", color: "#EA2C00" },
+  { name: "chineseOrange", color: "#EA733B" },
+  { name: "chinesePink", color: "#E07B9A" },
+  { name: "coolGrey", color: "#B7B186" },
+  { name: "moonStone", color: "#BD5B3B" },
+  { name: "oceanGreen", color: "#4CAF93" },
+  { name: "citron", color: "#A1AF2F" },
+  { name: "goldenrod", color: "#DC9925" },
+  { name: "magicPotion", color: "#3FF5CA" },
+];
 function Settings(props) {
   const searchRef = useRef();
   const [openModal, setOpenModal] = useState(true);
   const dispatch = useDispatch();
+
+  const handleGeneralSettingSubmission = (values) => {
+    dispatch(addProject(values));
+  };
 
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
@@ -149,40 +153,55 @@ function Settings(props) {
                   projectName: "",
                   projectKey: "",
                 }}
-                onSubmit={async (values) => {}}
+                onSubmit={handleGeneralSettingSubmission}
               >
-                <Form>
-                  <div className="flex flex-col gap-2 mb-2">
-                    <label htmlFor="projectName" className="font-light">
-                      Projects Name <span className="text-red-600">*</span>
-                    </label>
-                    <Field
-                      className="outline-none p-2 rounded-sm max-w-96 border border-gray-200 rounded"
-                      id="projecttName"
-                      name="projectName"
-                      placeholder="project name"
-                    />
-                  </div>
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <div className="flex flex-col gap-2 mb-2">
+                      {console.log("vgg", values)}
+                      <label htmlFor="projectName" className="font-light">
+                        Projects Name <span className="text-red-600">*</span>
+                      </label>
+                      <Field
+                        className="outline-none p-2 rounded-sm max-w-96 border border-gray-200 rounded"
+                        id="projecttName"
+                        name="projectName"
+                        placeholder="project name"
+                        value={values.projectName}
+                        onChange={handleChange}
+                      />
+                    </div>
 
-                  <flex className="flex flex-col gap-2 mb-2">
-                    <label htmlFor="projectKey" className="font-light">
-                      Projects Key <span className="text-red-600">*</span>
-                    </label>
-                    <Field
-                      className="outline-none p-2 rounded-sm max-w-96 border border-gray-200"
-                      id="projecttKey"
-                      name="projectKey"
-                      placeholder="project key"
-                    />
-                  </flex>
+                    <flex className="flex flex-col gap-2 mb-2">
+                      <label htmlFor="projectKey" className="font-light">
+                        Projects Key <span className="text-red-600">*</span>
+                      </label>
+                      <Field
+                        className="outline-none p-2 rounded-sm max-w-96 border border-gray-200"
+                        id="projecttKey"
+                        name="projectKey"
+                        placeholder="project key"
+                        onChange={handleChange}
+                        value={values.projectKey}
+                      />
+                    </flex>
 
-                  <button
-                    className="px-4 bg-blue-300 py-2 rounded-sm font-bold text-white mt-2 hover:text-black hover:bg-blue-200 transition-all"
-                    type="submit"
-                  >
-                    Save
-                  </button>
-                </Form>
+                    <button
+                      className="px-4 bg-blue-300 py-2 rounded-sm font-bold text-white mt-2 hover:text-black hover:bg-blue-200 transition-all"
+                      type="submit"
+                    >
+                      Save
+                    </button>
+                  </Form>
+                )}
               </Formik>
             </TabPanel>
             <TabPanel>
@@ -374,7 +393,7 @@ function Settings(props) {
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    console.log('values issue types', values)
+                    console.log("values issue types", values);
                     dispatch(addIssueType(values));
                   }}
                 >
@@ -389,7 +408,7 @@ function Settings(props) {
                     /* and other goodies */
                   }) => (
                     <Form onSubmit={handleSubmit}>
-                      {console.log('ppp', values)}
+                      {console.log("ppp", values)}
                       <div className="flex flex-col gap-2 py-2 mb-2">
                         <p className="text-red-200 text-md">
                           {errors.issueType &&

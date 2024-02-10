@@ -147,11 +147,12 @@ function Index(props) {
             </div>
           </div>
           <div className="flex flex-col w-1/2 h-96">
+          <div className="flex  flex-col h-96">
             <div className="font-bold py-3">Status</div>
             <div className="border py-4">
               <div className="mx-2 items-center px-4 bg-red-600 h-4"></div>
               <div className="text-sm text-right mr-4">90% closed</div>
-              <div className="flex items-center p-4 justify-between rounded-sm">
+              <div className="flex flex-wrap items-center p-4 justify-between rounded-sm">
                 <div className="flex items-center flex-col">
                   <p className="text-sm py-2">Open</p>
                   <div className="rounded-full text-center w-24 bg-red-400">
@@ -180,6 +181,42 @@ function Index(props) {
               </div>
             </div>
           </div>
+          <div className="flex flex-col h-96">
+            <div className="font-bold py-3">Categories</div>
+            <div className="border py-4">
+              <div className="mx-2 items-center px-4 bg-red-600 h-4"></div>
+              <div className="text-sm text-right mr-4">90% closed</div>
+              <div className="flex flex-wrap items-center p-4 justify-between rounded-sm">
+                <div className="flex items-center flex-col">
+                  <p className="text-sm py-2">Open</p>
+                  <div className="rounded-full text-center w-24 bg-red-400">
+                    1
+                  </div>
+                </div>
+                <div className="flex items-center flex-col">
+                  <p className="text-sm py-2">In Progress</p>
+                  <div className="rounded-full text-center w-24 bg-blue-400">
+                    1
+                  </div>
+                </div>
+                <div className="flex items-center flex-col">
+                  <p className="text-sm py-2">Closed</p>
+                  <div className="rounded-full text-center w-24 bg-green-400">
+                    1
+                  </div>
+                </div>
+
+                <div className="flex items-center flex-col">
+                  <p className="text-sm py-2">Resolved</p>
+                  <div className="rounded-full text-center w-24 bg-yellow-400">
+                    1
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+    
         </div>
       </main>
     </div>

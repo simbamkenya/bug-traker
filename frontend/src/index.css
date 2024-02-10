@@ -10,13 +10,18 @@
 }
 
 .w-md-editor-text textarea {
-  /* padding: 0; */
+  padding: 0.25em;
+  font-size: 1em;
+  line-height: 24px;
+  font-weight: 300;
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 80%;
+  height: 100%;
   width: 100%;
   resize: none;
+  background-color: white;
+  outline: none;
 }
 
 .react-datepicker__input-container > input{

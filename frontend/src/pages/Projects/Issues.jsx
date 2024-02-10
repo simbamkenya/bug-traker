@@ -72,8 +72,22 @@ function Issues(props) {
             </div>
           </div>
         </div>
-        <div className="border-2 m-h-48 mx-4 my-2 rounded">
+        <div className="m-h-48 mx-4 my-2 rounded">
+          <div className="font-semibold text-md py-2">Search Conditions</div>
+          <div className="py-2">
+            <div className="flex gap-2 text-sm py-2">
+              <span className="font-bold">Status:</span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">All</span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">Open</span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">In Progress</span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">Closed</span>
+            </div>
+            
+          </div>
           <div class="w-full">
+            <div className="py-2">
+              <p className="font-semibold">List of Issues</p>
+            </div>
             <div class="border-b border-gray-200 shadow">
               <table class="divide-y divide-green-400 w-full">
                 <thead class="bg-gray-50">
@@ -93,14 +107,14 @@ function Issues(props) {
                 <tbody class="bg-white divide-y divide-gray-300">
                   {bugs.map((bug) => (
                     <tr key={bug.id} class="whitespace-nowrap">
-                      <td class="px-6 py-4 text-sm text-gray-500">{bug.id}</td>
-                      <td class="px-6 py-4">
-                        <div class="text-sm text-gray-900">{bug.title}</div>
+                      <td class="px-6 py-2 text-xs text-gray-500">{bug.id}</td>
+                      <td class="px-6 py-2">
+                        <div class="text-xs text-gray-900">{bug.title}</div>
                       </td>
-                      <td class="px-6 py-4">
-                        <div class="text-sm text-gray-500">{bug.severity}</div>
+                      <td class="px-6 py-2">
+                        <div class="text-xs text-gray-500">{bug.severity}</div>
                       </td>
-                      <td class="px-6 py-4 text-sm text-gray-500">
+                      <td class="px-6 py-2 text-xs text-gray-500">
                         <span
                           className={`${
                             bug.priority === "high"
@@ -111,7 +125,7 @@ function Issues(props) {
                           {bug.priority}
                         </span>
                       </td>
-                      <td class="px-6 py-4">
+                      <td class="px-6 py-2">
                         <a href="#">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +145,7 @@ function Issues(props) {
                           </svg>
                         </a>
                       </td>
-                      <td class="px-6 py-4">
+                      <td class="px-6 py-2">
                         <a href="#">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
