@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Space;
+use Termwind\Components\Span;
+
+use App\Http\Requests\StoreSpaceRequest;
+use App\Http\Requests\UpdateSpaceRequest;
+use App\Http\Requests\UpdateTeamRequest;
 
 class SpaceController extends Controller
 {
@@ -12,12 +18,17 @@ class SpaceController extends Controller
     public function index()
     {
         //
+        $spaces = Space::all();
+        return response()->json([
+            'spaces' => $spaces,
+            'message' => 'spaces fetched successfully!'
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSpaceRequest $request)
     {
         //
     }
@@ -25,15 +36,19 @@ class SpaceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Space $space)
     {
         //
+        return response()->json([
+            'space' => $space,
+            'message' => 'success'
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSpaceRequest $request, Space $space)
     {
         //
     }
@@ -41,8 +56,14 @@ class SpaceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Space $space)
     {
         //
+        $space->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'space was deleted successfully!'
+        ], 200);
     }
 }

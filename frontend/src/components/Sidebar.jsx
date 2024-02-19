@@ -12,7 +12,7 @@ import { IoSettings } from "react-icons/io5";
 function Sidebar(props) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     return (
-        <aside className="bg-blue-300 min-h-screen">
+        <aside className="bg-zomp min-h-screen">
         <div>
           <div
             onClick={() => setSidebarOpen(!sidebarOpen)}

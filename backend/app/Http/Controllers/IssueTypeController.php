@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\IssueType;
+
+use App\Http\Requests\StoreIssueTypeRequest;
+use App\Http\Requests\UpdateIssueTypeRequest;
 
 class IssueTypeController extends Controller
 {
@@ -12,12 +16,17 @@ class IssueTypeController extends Controller
     public function index()
     {
         //
+        $types = IssueType::all();
+        return response()->json([
+            'issueTypes' => $types,
+            'message' => 'issue types fetched successfully!'
+        ], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreIssueTypeRequest $request)
     {
         //
     }
@@ -25,15 +34,19 @@ class IssueTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(IssueType $issue_type)
     {
         //
+        return response()->json([
+            'issueType' => $issue_type,
+            'message' => 'success'
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateIssueTypeRequest $request, IssueType $issueType)
     {
         //
     }
@@ -41,8 +54,14 @@ class IssueTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(IssueType $issueType)
     {
         //
+        $issueType->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Issue Type was deleted successfully!'
+        ], 200);
     }
 }

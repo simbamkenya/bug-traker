@@ -10,6 +10,12 @@ export default {
         'lora': ['Lora'], 
         'mont': ['Montserrat'],
         'inco': ['Inconsolata']
+      },
+      colors: {
+        'metallicblue': '#265073',
+        'zomp': '#2D9596',
+        'turgreen': '#D09AA8',
+        'beige': '#E3DAFA'
       }
     },
   },

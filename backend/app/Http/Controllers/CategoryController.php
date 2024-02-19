@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -12,6 +15,11 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $categories= Category::all();
+        return response()->json([
+            'categories' => $categories,
+            'message' => 'categories fetched successfully!'
+        ], 200);
     }
 
     /**
@@ -25,9 +33,13 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
         //
+        return response()->json([
+            'category' => $category,
+            'message' => 'success'
+        ], 200);
     }
 
     /**
@@ -41,8 +53,14 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
         //
+        $category->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'category was deleted successfully!'
+        ], 200);
     }
 }
