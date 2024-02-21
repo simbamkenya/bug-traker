@@ -18,6 +18,9 @@ class ProjectFactory extends Factory
     {
         return [
             //
+            'key' => 'nn',
+            'name' => fake()->name(),
+            'space_id' => '2344', 
         ];
     }
 }

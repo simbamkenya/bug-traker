@@ -18,6 +18,7 @@ class SpaceFactory extends Factory
     {
         return [
             //
+            'name' => fake()->name(),
         ];
     }
 }

@@ -10,6 +10,7 @@ import userReducer from "./features/userSlice";
 import usersReducer from "./features/usersSlice";
 import categoriesReducer from "./features/categoriesSlice";
 import categoryReducer from "./features/categorySlice";
+import authReducer from "./features/authSlice";
 
 export const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
         project: projectReducer,
         spaces: spacesReducer,
         space: spaceReducer,
+        auth: authReducer,
         user: userReducer,
         users: usersReducer,
         category: categoryReducer,

@@ -7,6 +7,10 @@ import { GoProject } from "react-icons/go";
 import { IoSettingsSharp } from "react-icons/io5";
 import { Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
+import AddModalProject from "../components/AddModalProject";
+import AddModalUser from "../components/AddModalUser";
+
+import { useSelector, useDispatch } from "react-redux";
 
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
@@ -15,8 +19,59 @@ function Dashboard(props) {
 
   const [showCancelIcon, setShowCancelIcon] = useState(true);
 
+  const issues = useSelector((state) => state.issues);
+  const auth = useSelector((state) => state.auth);
+
+  console.log("auth", auth);
+
+  //filtering by due date all/5days/due today/overdue
+
+  const filterByDate = function (data, par) {
+    data.filter((issue) => issue);
+    return data;
+  };
+
+  const filterByAssignee = function (data, rr) {
+    data.filter((issue) => issue);
+  };
+
+  const filterByCreator = function (data, rr) {
+    data.filter((issue) => issue);
+  };
+
+  const formatTime = function (date, notificationTime) {
+    let time = Date.now() - new Date(date);
+    
+    if(time <= (5 * 1000)){
+      //now
+      return `now`;
+    } else if ((time >= (5 * 1000)) && ((time <= 30 * 1000))) {
+      //10-20-30
+      time / 1000
+      return time;
+    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000)){
+      time/1000 * 60;
+      //minutes
+      return time;
+    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000)){
+      //hours
+      return time;
+    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000)) {
+      //days
+      return time;
+    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000) ) {
+      //months
+      return 
+    } else if (time >= (365 * 24 * 60 * 60 * 1000)) { 
+      //years
+      time/ (365 * 24 * 60 * 60 * 1000)
+      return 
+    }
+    return time;
+  };
+
   let searchRef = useRef(null);
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   const focus = () => {
     console.log("clicked", searchRef.current.focus());
@@ -28,8 +83,15 @@ function Dashboard(props) {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex justify-center py-4">
+        <div className="relative">
+          {<AddModalUser />}
+          {<AddModalProject />}
+        </div>
         <span className="font-bold text-2xl mr-2">Simba</span>
-        <div onClick={()=> navigate('/space/settings')} className="my-anchor-element text-3xl h-8 w-8 p-[0.5] rounded-full border-2 flex items-center justify-center hover:bg-blue-200 hover:text-white">
+        <div
+          onClick={() => navigate("/space/settings")}
+          className="my-anchor-element text-3xl h-8 w-8 p-[0.5] rounded-full border-2 flex items-center justify-center hover:bg-blue-200 hover:text-white"
+        >
           <IoIosSettings />
         </div>
         <Tooltip

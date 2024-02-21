@@ -12,7 +12,7 @@ class Team extends Model
 
     protected $fillable = [
         'name',
-        'user_id'
+       // 'user_id'
     ];
 
     public function users(){

@@ -4,6 +4,8 @@ import useComponentVisible from "../hooks/useComponentVisible";
 import { Tooltip } from "react-tooltip";
 import { IoSettingsSharp } from "react-icons/io5";
 import { GoProject } from "react-icons/go";
+import AddModalProject from "./AddModalProject";
+import AddModalUser from "./AddModalUser";
 
 function MainNavBar(props) {
   const [dropVisible, setDropVisible] = useState(false);
@@ -20,20 +22,21 @@ function MainNavBar(props) {
   const showDropDown = () => {
     //setDropVisible(true)
     setIsComponentVisible(true);
+    
   };
   return (
     <nav className="p-2 bg-gray-200">
       <ul className="flex gap-2">
         <Link
           to="/dashboard"
-          className="py-2 px-2 text-sm rounded-sm hover:bg-green-100"
+          className="py-2 px-2 text-sm rounded-sm hover:bg-green-300"
         >
           Dashboard
         </Link>
         <Link
           onClick={showDropDown}
           ref={ref}
-          className="relative py-2 px-2 text-sm rounded-sm hover:bg-green-100"
+          className="relative py-2 px-2 text-sm rounded-sm hover:bg-green-300"
         >
           Projects
           <div
@@ -140,7 +143,7 @@ function MainNavBar(props) {
           </div>
         </Link>
 
-        <Link className="py-2 px-2 text-sm rounded-sm hover:bg-green-100">
+        <Link className="py-2 px-2 text-sm rounded-sm hover:bg-green-300">
           Recently Viewed
         </Link>
         <Tooltip
@@ -157,7 +160,7 @@ function MainNavBar(props) {
         <Link
           onClick={showDropDownAdd}
           ref={addRef}
-          className="flex relative my-auto items-center justify-center h-6 w-6  rounded-full bg-blue-300 hover:bg-blue-200"
+          className="flex relative my-auto items-center justify-center h-6 w-6  rounded-full bg-blue-300"
         >
           <a className="add">
             <span className="text-2xl flex items-center text-white mb-[4px] items-center">
@@ -165,19 +168,19 @@ function MainNavBar(props) {
             </span>
           </a>
           <div
-            className={`absolute w-32 top-12 ${
+            className={`absolute w-32 top-12 rounded-md shadow-lg ${
               isSecondComponentVisible ? "absolute" : "hidden"
             }`}
           >
             <ul className="w-full p-2.5 text-gray-500 bg-white border rounded-md shadow-sm">
-              <li className="whitespace-nowrap rounded-sm  text-sm text-left px-2 py-[4px] hover:bg-gray-200">
-                <Link className="">Add Issue</Link>
+              <li className="whitespace-nowrap rounded-sm  text-sm text-left px-2 py-[4px] hover:bg-green-300">
+                <Link className="" to="/projects/addissue">Add Issue</Link>
               </li>
-              <li className="whitespace-nowrap rounded-sm  text-left px-2 py-[4px] text-sm hover:bg-gray-200">
-                <Link>Add Project</Link>
+              <li className="whitespace-nowrap rounded-sm  text-left px-2 py-[4px] text-sm hover:bg-green-300">
+                <Link to="">Add Project</Link>
               </li>
-              <li className="whitespace-nowrap rounded-sm px-2 py-[4px] text-left text-sm hover:bg-gray-200">
-                <Link>Add User</Link>
+              <li className="whitespace-nowrap rounded-sm px-2 py-[4px] text-left text-sm hover:bg-green-300">
+                <Link to="">Add User</Link>
               </li>
             </ul>
           </div>
