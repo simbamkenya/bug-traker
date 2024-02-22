@@ -24,9 +24,14 @@ import SpaceSetting from "./pages/spaces/Settings";
 import ProjectSetting from "./pages/spaces/ProjectSetting";
 import TeamSetting from "./pages/spaces/TeamSetting";
 import UserSetting from "./pages/spaces/UserSetting";
+import axios from "axios";
 
 
 function App() {
+  console.log("token from localstorage", localStorage.getItem("access_token"));
+  axios.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${localStorage.getItem("access_token")}`;
   return (
     <Routes>
       <Route path="/" element={<Welcome />} />

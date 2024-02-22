@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSpaceRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,12 @@ class UpdateSpaceRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required|string|max:120'
+            'photo' => 'nullable|image|file|max:1024',
+            'name' => 'required|max:50',
+            'email' => 'required|email|max:50|unique:users,email',
+            // 'username' => 'required|min:4|max:25|alpha_dash:ascii|unique:users,username',
+            'password' => 'required_with:password_confirmation|min:6',
+            'password_confirmation' => 'same:password|min:6',
         ];
     }
 }

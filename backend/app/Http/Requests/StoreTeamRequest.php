@@ -11,7 +11,7 @@ class StoreTeamRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,7 @@ class StoreTeamRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string|max:120'
         ];
     }
 }

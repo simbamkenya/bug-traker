@@ -11,7 +11,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,9 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string|max:70',
+            'key' => 'required|string|max:70',
+            'space_id' => 'required|string|max:70'
         ];
     }
 }

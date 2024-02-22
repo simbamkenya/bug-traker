@@ -11,7 +11,7 @@ class UpdateIssueRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,15 @@ class UpdateIssueRequest extends FormRequest
     {
         return [
             //
+            'key' => 'required|string|max:100',
+            'subject' => 'required|string',
+            'priority' => 'required|string|max:50',
+            'status' => 'string|max:50',
+            'due'=> 'date',
+            'description' => 'string',
+            'category_id'  => 'string|max:70',
+            'assignee' => 'string|max:70',
+            'issue_type' => 'string|max:100'
         ];
     }
 }
