@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import AddModalProject from "../components/AddModalProject";
 import AddModalUser from "../components/AddModalUser";
 
+import { RiProjectorFill } from "react-icons/ri";
+
 import { useSelector, useDispatch } from "react-redux";
 
 function Dashboard(props) {
@@ -82,15 +84,17 @@ function Dashboard(props) {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="flex justify-center py-4">
+      <div className="flex justify-center items-end py-4">
         <div className="relative">
           {<AddModalUser />}
           {<AddModalProject />}
         </div>
+         
+         <span className="flex items-center text-4xl text-green-800 mr-2"><RiProjectorFill/></span>
         <span className="font-bold text-2xl mr-2">Simba</span>
         <div
           onClick={() => navigate("/space/settings")}
-          className="my-anchor-element text-3xl h-8 w-8 p-[0.5] rounded-full border-2 flex items-center justify-center hover:bg-blue-200 hover:text-white"
+          className="my-anchor-element text-2xl h-8 w-8 p-[0.5] rounded-full border-2 flex items-center justify-center hover:bg-blue-200 hover:text-white"
         >
           <IoIosSettings />
         </div>

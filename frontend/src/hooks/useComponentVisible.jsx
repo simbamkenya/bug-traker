@@ -1,21 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
-export default function useComponentVisible(initialIsVisible, addVisibility) {
+export default function useComponentVisible(initialIsVisible, addVisibility, profileVisibility, spaceVisibility, notificationVisibility) {
   const [isComponentVisible, setIsComponentVisible] = useState(
     initialIsVisible
   );
   const [isSecondComponentVisible, setIsSecondComponentVisible] = useState(
     addVisibility
   );
+  const [isProfileComponentVisible, setIsProfileComponentVisible] = useState(
+    profileVisibility
+  );
+  const [isSpaceComponentVisible, setIsSpaceComponentVisible] = useState(
+    spaceVisibility
+  );
+  const [isNotificationComponentVisible, setIsNotificationComponentVisible] = useState(
+    notificationVisibility
+  );
   
   const ref = useRef(null);
   const addRef = useRef(null);
+  const profileRef = useRef(null);
+  const spaceRef = useRef(null);
+  const notificationRef = useRef(null);
   
   const handleHideDropdown = (event) => {
     if (event.key === "Escape") {
       setIsComponentVisible(false);
       setIsSecondComponentVisible(false)
+      setIsProfileComponentVisible(false)
+      setIsSpaceComponentVisible(false)
+      setIsNotificationComponentVisible(false)
     }
   };
 
@@ -25,6 +40,16 @@ export default function useComponentVisible(initialIsVisible, addVisibility) {
     }
     if (addRef.current && !addRef.current.contains(event.target)) {
       setIsSecondComponentVisible(false);
+    }
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setIsProfileComponentVisible(false);
+    }
+    if (spaceRef.current && !spaceRef.current.contains(event.target)) {
+      setIsSpaceComponentVisible(false);
+    }
+    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      console.log('clicked outside')
+      setIsNotificationComponentVisible(false);
     }
   };
 
@@ -37,5 +62,21 @@ export default function useComponentVisible(initialIsVisible, addVisibility) {
     };
   });
 
-  return { ref, addRef, isComponentVisible, setIsComponentVisible, isSecondComponentVisible, setIsSecondComponentVisible};
+  return { 
+    ref,
+    addRef, 
+    spaceRef,
+    profileRef,
+    notificationRef,
+    isComponentVisible, 
+    setIsComponentVisible, 
+    isSecondComponentVisible, 
+    setIsSecondComponentVisible,
+    setIsProfileComponentVisible,
+    isNotificationComponentVisible,
+    setIsNotificationComponentVisible,
+    isProfileComponentVisible,
+    isSpaceComponentVisible,
+    setIsSpaceComponentVisible,
+  };
 }
