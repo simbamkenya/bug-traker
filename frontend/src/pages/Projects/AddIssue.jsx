@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
@@ -10,31 +10,31 @@ import MDEditor from "@uiw/react-md-editor";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import Mentions from "rc-mentions";
-import { addIssue } from "../../store/features/issuesSlice";
-const { Option } = Mentions;
+import { addIssue, fetchIssues } from "../../store/features/issuesSlice";
+import { fetchIssueTypes } from "../../store/features/issueTypesSlice";
+import { fetchCategories } from "../../store/features/categoriesSlice";
+import { fetchUsers } from "../../store/features/usersSlice";
+
 import { useSelector, useDispatch } from "react-redux";
 
+import Mentions from "rc-mentions";
+const { Option } = Mentions;
 function AddIssue(props) {
   const searchRef = useRef(null);
+
   const [openIssueCategory, setOpenIssueCategory] = useState(false);
   const [openIssueType, setOpenIssueType] = useState(false);
+
   const [category, setCategory] = useState("");
   const [issueType, setIssueType] = useState("");
   const [status, setStatus] = useState("");
 
+  const categories = useSelector((state) => state.categories.data);
   const users = useSelector((state) => state.users.data);
-  console.log("users", users);
-  const categories = [
-    { category: "cat one" },
-    { category: "cat two" },
-    { category: "cat three" },
-  ];
-  const issuesTypes = [
-    { issueType: "type one" },
-    { issueType: "type two" },
-    { issueType: "type three" },
-  ];
+  const types = useSelector((state) => state.types.data);
+
+  console.log("userss", users);
+
   const statuses = [
     { status: "Open", color: "#ED8077" },
     { status: "In Progress", color: "#4488C5" },
@@ -50,11 +50,28 @@ function AddIssue(props) {
   const [startDate, setStartDate] = useState(new Date());
   const dispatch = useDispatch();
 
-  const [value, setValue] = useState("Type here...");
+  const [value, setValue] = useState("Issue description..");
+
+  useEffect(() => {
+    dispatch(fetchIssueTypes());
+    dispatch(fetchCategories());
+    dispatch(fetchUsers());
+  }, []);
 
   const handleNewIssueSubmission = (values, { setSubmitting }) => {
-    let content = { ...values, description: value, status: status, assignee: assignee.userId };
-    dispatch(addIssue(content));
+    console.log("oo", values);
+    console.log("assignee", assignee);
+    let content = {
+      ...values,
+      description: value,
+      type: issueType.id,
+      status: status,
+      assignee: assignee.id,
+      category: category.id,
+    };
+    console.log("nee", content);
+
+    dispatch(addIssue(content)).then((res) => console.log(res));
   };
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
@@ -123,9 +140,8 @@ function AddIssue(props) {
             <Formik
               initialValues={{
                 subject: "subject one",
-                date: startDate,
+                due: startDate,
                 description: value,
-                status: "",
               }}
               validate={(values) => {
                 const errors = {};
@@ -148,7 +164,7 @@ function AddIssue(props) {
                   <div className="flex flex-col gap-2 py-2 mb-2">
                     <span
                       for="subject"
-                      className="block mb-2 text-md text-gray-900"
+                      className="block mt-2 font-medium text-md text-gray-900"
                     >
                       Subject *
                     </span>
@@ -158,7 +174,7 @@ function AddIssue(props) {
                       name="subject"
                       placeholder="Subject"
                       value={values.subject}
-                      onchange={handleChange}
+                      onChange={handleChange}
                     />
                   </div>
 
@@ -166,18 +182,18 @@ function AddIssue(props) {
                     <div className="flex flex-col flex-start">
                       <span
                         for="countries"
-                        class="block mb-2 text-md text-gray-900"
+                        class="block mb-2 font-medium text-md text-gray-900"
                       >
-                        Issue Type
+                        Type
                       </span>
                       <div className="relative z-40">
                         <button
                           onClick={() =>
                             setOpenIssueCategory(!openIssueCategory)
                           }
-                          className="flex border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
+                          className="flex border borde r-2 border-gray-300 py-2 px-4 min-w-48 rounded-sm bg-white focus:shadow focus:shadow-zomp focus:bg-z omp bg-bl ue-100 hover:text-metallicblue"
                         >
-                          {issueType}
+                          {issueType.name}
                           <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
                             <FaCaretLeft />
                           </div>
@@ -188,15 +204,15 @@ function AddIssue(props) {
                           }`}
                         >
                           <div className="mt-[2px]">
-                            {issuesTypes.map(({ issueType }) => (
+                            {types.map((type) => (
                               <div
                                 onClick={() => {
-                                  setIssueType(issueType);
+                                  setIssueType(type);
                                   setOpenIssueCategory(false);
                                 }}
                                 className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
                               >
-                                {issueType}
+                                {type.name}
                               </div>
                             ))}
                           </div>
@@ -289,7 +305,7 @@ function AddIssue(props) {
                           onClick={() => setOpenCategory(!openCategory)}
                           className="flex gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
                         >
-                          {category}
+                          {category.name}
                           <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
                             <FaCaretLeft />
                           </div>
@@ -299,9 +315,9 @@ function AddIssue(props) {
                             openCategory ? "block" : "hidden"
                           }`}
                         >
-                          {category}
+                          {category.name}
                           <div className="mt-[2px]">
-                            {categories.map(({ category }) => (
+                            {categories.map((category) => (
                               <div
                                 onClick={() => {
                                   setCategory(category);
@@ -309,7 +325,7 @@ function AddIssue(props) {
                                 }}
                                 className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
                               >
-                                {category}
+                                {category.name}
                               </div>
                             ))}
                           </div>
@@ -325,7 +341,7 @@ function AddIssue(props) {
                           onClick={() => setOpenAssignee(!openAssignee)}
                           className="flex gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
                         >
-                          {assignee.nickname}
+                          {assignee.name}
                           <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
                             <FaCaretLeft />
                           </div>
@@ -344,7 +360,7 @@ function AddIssue(props) {
                                 }}
                                 className="hover:bg-gray-300 text-gray-800  text-sm rounded-md px-2 py-[4px]"
                               >
-                                {user.nickname}
+                                {user.name}
                               </div>
                             ))}
                           </div>
@@ -356,9 +372,9 @@ function AddIssue(props) {
                       <div className="relative ml-auto hover:z-50">
                         <DatePicker
                           name="date"
-                          value={values.date}
-                          onChange={(date) => setFieldValue("date", date)}
-                          selected={values.date}
+                          value={values.due}
+                          onChange={(date) => setFieldValue("due", date)}
+                          selected={values.due}
                         />
                       </div>
                     </div>

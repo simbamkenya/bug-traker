@@ -7,7 +7,7 @@ export const fetchIssueTypes = createAsyncThunk(
     'issueTypes/fetchIssueTypes',
     async () => {
         try {
-           const res = await axios.get(`${BASE_URL}/api/issuesTypes`).then((res) => res.data)
+           const res = await axios.get(`${BASE_URL}/api/issuetypes`).then((res) => res.data)
            return res
         } catch (error) {
             console.log(error)
@@ -18,8 +18,7 @@ export const addIssueType = createAsyncThunk(
     'issueTypes/addIssueType',
     async (data, thunkAPI) => {
         try {
-            console.log('new issue type', data)
-           const res = await axios.post(`${BASE_URL}/api/issuesTypes`, data)
+           const res = await axios.post(`${BASE_URL}/api/issuetypes`, data)
            return res.data
         } catch (error) {
             if(error.response && error.response.data.message){
@@ -38,7 +37,7 @@ const initialState = {
 }
 
 export const issueTypesSlice = createSlice({
-    name: 'issueTypes',
+    name: 'types',
     initialState,
     reducers: {
         editIssue: (state, action) => {

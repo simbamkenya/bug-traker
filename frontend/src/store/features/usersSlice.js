@@ -1,29 +1,10 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL } from "../../constants";
 import axios from "axios";
 
-const users = [
-    {
-        email: 'simba@gmail.com',
-        userId: 'simbauu',
-        nickname: 'lion',
-        role: 'admin'
-    },
-    {
-        email: 'phares@gmail.com',
-        userId: 'phares',
-        nickname: 'perez',
-        role: 'admin'
-    },
-    {
-        email: 'muruthi@gmail.com',
-        userId: 'muruthi',
-        nickname: 'cole',
-        role: 'member'
-    },
-]
 
 const initialState = {
-    data: [...users],
+    data: [],
     error: '',
     loading: true
 }
@@ -65,7 +46,7 @@ export const deleteUserById = createAsyncThunk(
     async (id) => {
         try {
            const res = axios.delete(`${BASE_URL}/api/users/${id}`).then((res) => res.data)
-           return id
+           return res
         } catch (error) {
             console.log(error)
         }

@@ -16,7 +16,8 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::all();
+        // $users = User::all();
+        $users = User::with('spaces')->get();
 
         return response()->json([
             'status' => 'success',
@@ -59,7 +60,8 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
-        $user = User::find($id);
+        // $user = User::find($id);
+        $user = User::with(['projects', 'spaces', 'issues'])->where('id', $id)->first();
 
         if ($user) {
             return response()->json($user);

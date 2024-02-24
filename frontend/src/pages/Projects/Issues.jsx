@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../../components/Sidebar";
 import { useRef } from "react";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchIssues } from "../../store/features/issuesSlice";
+import { deleteIssueById } from "../../store/features/issuesSlice";
 
 function Issues(props) {
   const searchRef = useRef();
-  const bugs = useSelector((state) => state.issues.data)
+  const dispatch = useDispatch();
+  const bugs = useSelector((state) => state.issues.data);
+
+  console.log("bugs", bugs);
+  useEffect(() => {
+    dispatch(fetchIssues())
+  }, []);
 
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
@@ -77,12 +84,19 @@ function Issues(props) {
           <div className="py-2">
             <div className="flex gap-2 text-sm py-2">
               <span className="font-bold">Status:</span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">All</span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">Open</span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">In Progress</span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">Closed</span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
+                All
+              </span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
+                Open
+              </span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
+                In Progress
+              </span>
+              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
+                Closed
+              </span>
             </div>
-            
           </div>
           <div class="w-full">
             <div className="py-2">
@@ -93,15 +107,14 @@ function Issues(props) {
                 <thead class="bg-gray-50">
                   <tr>
                     <th class="px-6 py-2 text-xs text-gray-500">ID</th>
-                    <th class="px-6 py-2 text-xs text-left text-gray-500">Bug Title</th>
-                    <th class="px-6 py-2 text-xs text-gray-500">
-                      Bug Severity
+                    <th class="px-6 py-2 text-xs text-left text-gray-500">
+                      Bug Title
                     </th>
-                    <th class="px-6 py-2 text-xs text-gray-500">
+                    <th class="px-6 py-2 text-xs text-left text-gray-500">
                       Bug Priority
                     </th>
-                    <th class="px-6 py-2 text-xs text-gray-500">Status</th>
-                    <th class="px-6 py-2 text-xs text-gray-500">Delete</th>
+                    <th class="px-6 py-2 text-xs text-left text-gray-500">Status</th>
+                    <th class="px-6 py-2 text-xs text-left text-gray-500">Delete</th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-300">
@@ -109,10 +122,7 @@ function Issues(props) {
                     <tr key={bug.id} class="whitespace-nowrap">
                       <td class="px-6 py-2 text-xs text-gray-500">{bug.id}</td>
                       <td class="px-6 py-2">
-                        <div class="text-xs text-gray-900">{bug.title}</div>
-                      </td>
-                      <td class="px-6 py-2">
-                        <div class="text-xs text-gray-500">{bug.severity}</div>
+                        <div class="text-xs text-gray-900">{bug.subject}</div>
                       </td>
                       <td class="px-6 py-2 text-xs text-gray-500">
                         <span
@@ -125,25 +135,8 @@ function Issues(props) {
                           {bug.priority}
                         </span>
                       </td>
-                      <td class="px-6 py-2">
-                        <a href="#">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="w-6 h-6 text-blue-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 
-                       2 0 112.828 
-                       2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
-                          </svg>
-                        </a>
+                      <td class="px-6 py-2 text-xs text-gray-500">
+                        {bug.status}
                       </td>
                       <td class="px-6 py-2">
                         <a href="#">
@@ -153,6 +146,7 @@ function Issues(props) {
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            onClick={() => dispatch(deleteIssueById(bug.id))}
                           >
                             <path
                               stroke-linecap="round"

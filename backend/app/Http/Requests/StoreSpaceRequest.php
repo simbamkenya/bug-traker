@@ -23,7 +23,8 @@ class StoreSpaceRequest extends FormRequest
     {
         return [
             //
-            'name' => 'required|string|max:120'
+            'name' => 'required|string|max:120',
+            'user_id' => 'string'
         ];
     }
 }

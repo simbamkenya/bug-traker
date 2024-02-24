@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Space;
+use App\Models\User;
 
 class Project extends Model
 {
@@ -12,10 +14,15 @@ class Project extends Model
     protected $fillable = [
         'name',
         'key',
-        'space_id'
+        'space_id',
+        'user_id'
     ];
 
     public function space(){
         return $this->belongsTo(Space::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

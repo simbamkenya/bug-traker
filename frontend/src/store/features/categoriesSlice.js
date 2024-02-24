@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL } from "../../constants";
 import { data } from "../../data"
 import axios from "axios";
 
-
-//console.log('data', data)
 const initialState = {
-    data: [...data],
+    data: [],
     error: '',
     loading: true
 }
@@ -14,8 +13,7 @@ export const addCategory = createAsyncThunk(
     'categories/addCategory',
     async(data, thunkAPI) => {
         try {
-            console.log('addcat', data)
-            const res = await axios.post(`${BASE_URL}/api/category`, data)
+            const res = await axios.post(`${BASE_URL}/api/categories`, data)
             return res.data
         } catch (error) {
             if(error.response && error.response.data.message){
@@ -44,7 +42,7 @@ export const fetchCategories = createAsyncThunk(
     'categories/fetchCategories',
     async(_, thunkAPI) => {
         try {
-            const res = await axios.get(`${BASE_URL}/api/category`)
+            const res = await axios.get(`${BASE_URL}/api/categories`)
             return res.data
         } catch (error) {
             if(error.response && error.response.data.message){
@@ -69,7 +67,6 @@ export const categoriesSlice = createSlice({
             state.loading = true
          })
          .addCase(addCategory.fulfilled, (state, action) => {
-            console.log('action', action)
             state.loading = false;
             state.data = [...state.data, action.payload]
          })
@@ -93,7 +90,6 @@ export const categoriesSlice = createSlice({
             state.loading = true;
          })
          .addCase(deleteCategoryById.fulfilled, (state, action) => {
-            console.log('ppp', action.payload)
             state.loading = false;
             state.error  =  null;     
          })

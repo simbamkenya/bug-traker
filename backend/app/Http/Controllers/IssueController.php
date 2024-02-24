@@ -8,6 +8,7 @@ use App\Models\Issue;
 
 use App\Http\Requests\StoreIssueRequest;
 use App\Http\Requests\UpdateIssueRequest;
+use Carbon\Carbon;
 
 class IssueController extends Controller
 {
@@ -27,9 +28,34 @@ class IssueController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreIssueRequest $request)
     {
-        //
+        
+        $request->validated();
+
+        // if ($request->fails()) {
+        //     return response()->json([
+        //         'errors' => $this->errorResponse($request->errors()->all())
+        //     ]);
+        // }
+        // dd($request->all());
+
+        $issue = new Issue();
+        $issue->category_id = $request->category;
+        $issue->issue_type_id = $request->type;
+        $issue->due = Carbon::parse($request->due);
+        $issue->status = $request->status;
+        $issue->assignee = $request->assignee;
+        $issue->priority =$request->priority;
+        $issue->subject = $request->subject;
+        $issue->description = $request->description;
+        $issue->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'issue was created successfully',
+            'issue' => $issue
+        ], 200);
         
     }
 

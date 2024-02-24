@@ -1,7 +1,16 @@
 import React from "react";
 import { Form, Formik, Field } from "formik";
+import { useSelector, useDispatch } from "react-redux";
+import { registerUser } from "../store/features/authSlice";
 
 function Register(props) {
+  const dispatch = useDispatch();
+
+  const handleRegister = (values) => {
+    console.log('register values', values)
+    dispatch(registerUser(values));
+  };
+
   return (
     <div className="bg-[#e9ecef] min-h-screen font-mont">
       <div class="flex mx -auto  px-4 py-16 sm:px-6 lg:px-8 ">
@@ -22,7 +31,7 @@ function Register(props) {
               }
               return errors;
             }}
-            onSubmit={() => {}}
+            onSubmit={handleRegister}
           >
             {({
               values,

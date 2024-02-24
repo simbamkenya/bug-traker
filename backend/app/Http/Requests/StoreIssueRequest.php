@@ -23,14 +23,14 @@ class StoreIssueRequest extends FormRequest
     {
         return [
             //
-            'key' => 'required|string|max:100',
             'subject' => 'required|string',
-            'priority' => 'required|string|max:50',
+            'priority' => 'string|max:50',
             'status' => 'string|max:50',
             'due'=> 'date',
             'description' => 'string',
-            'category_id'  => 'string|max:70',
-            'assignee' => 'string|max:70',
+            'category_id'  => 'integer',
+            'issue_type_id' => 'integer',
+            'assignee' => 'integer',
             'issue_type' => 'string|max:100'
         ];
     }

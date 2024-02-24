@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL } from "../../constants";
 import { data } from "../../data";
 import axios from "axios";
 

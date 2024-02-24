@@ -29,6 +29,16 @@ class IssueTypeController extends Controller
     public function store(StoreIssueTypeRequest $request)
     {
         //
+        $request->validated();
+
+        $type = IssueType::create($request->all());
+
+        return response()->json([
+            'type' => $type,
+            'message' => 'issue type was created successfully'
+        ]);
+
+
     }
 
     /**

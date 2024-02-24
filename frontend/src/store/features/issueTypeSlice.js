@@ -22,7 +22,7 @@ const initialState = {
 }
 
 export const issueTypeSlice = createSlice({
-    name: 'issueType',
+    name: 'type',
     initialState,
     reducers: {
         editIssue: (state, action) => {

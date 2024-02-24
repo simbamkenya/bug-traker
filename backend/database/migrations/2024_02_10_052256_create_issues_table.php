@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('issues', function (Blueprint $table) {
             $table->id();
             $table->date('due')->nullable();
-            $table->string('key');
             $table->string('status')->nullable();
             $table->string('subject');
             $table->string('priority')->nullable();

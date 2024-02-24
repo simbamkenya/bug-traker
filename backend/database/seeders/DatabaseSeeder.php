@@ -11,6 +11,8 @@ use App\Models\Project;
 use App\Models\Issue;
 use App\Models\Team;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\IssueSeeder;
@@ -36,17 +38,33 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        
+        $this->call([
+            UserSeeder::class,
+            // TeamSeeder::class,
+         //   IssueSeeder::class,
+         //   IssueTypeSeeder::class
+
+        ]);
+
         $categories = ['UI', 'Backend', 'Design Figma', 'Hosting'];
         $spaces = ['Mufasa', 'Leo', 'Cole'];
         $teams = ['Team A', 'Team B', 'Team C'];
+
+        foreach ($teams as $team){
+            Team::factory()->create([
+                'name' => $team
+            ]);
+        }
 
         foreach ($categories as $category) {
             Category::factory()->create(['name' => $category]);
         };
 
         foreach ($spaces as $space) {
-            Space::factory()->create(['name' => $space]);
+            Space::factory()->create(['name' => $space, 'user_id' => 1]);
         };
+         
 
         $issue_types = [];
 
@@ -54,7 +72,7 @@ class DatabaseSeeder extends Seeder
             IssueType::factory()->create([
                 'name' => $issue_type,
                 'key' => $issue_type . 'key',
-                'space_id' => "",
+                'space_id' => 1,
             ]);
         }
 
@@ -74,29 +92,22 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-
-        foreach($teams as $team){
-            Team::factory()->create([
-                'name' => $team
-            ]);
-        }
-        
        $projects = ['Ecommerce', 'Inventory System'];
 
        foreach($projects as $project){
            Project::factory()->create([
             'key' => 'key',
             'name' => $project,
-            'space_id' => '1'
+            'space_id' => 1,
+           'user_id' => 1,
         ]);     
        }
 
-        $this->call([
-            UserSeeder::class,
-            TeamSeeder::class,
-         //   IssueSeeder::class,
-         //   IssueTypeSeeder::class
+       DB::table('team_user')->insert([
+        ['user_id' => 1, 'team_id' => 1, 'created_at' => now(), 'updated_at' => now()],
+        ['user_id' => 2, 'team_id' => 2, 'created_at' => now(), 'updated_at' => now()],
+        ['user_id' => 1, 'team_id' => 3, 'created_at' => now(), 'updated_at' => now()]
+       ]);
 
-        ]);
     }
 }

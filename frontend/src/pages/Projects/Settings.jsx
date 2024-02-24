@@ -1,20 +1,23 @@
-import React from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 import { Formik, Field, Form } from "formik";
 import Modal from "../../components/Modal";
 
-import { addCategory } from "../../store/features/categoriesSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { addIssue } from "../../store/features/issuesSlice";
-import { addIssueType } from "../../store/features/issueTypesSlice";
 import { addProject } from "../../store/features/projectsSlice";
+
+import { addIssueType } from "../../store/features/issueTypesSlice";
+import { addCategory } from "../../store/features/categoriesSlice";
+import { deleteCategoryById } from "../../store/features/categoriesSlice";
+import { fetchCategories } from "../../store/features/categoriesSlice";
+
 const COLORS = [
   { name: "black", color: "#393939" },
   { name: "ferrariRed", color: "#EA2C00" },
@@ -27,14 +30,27 @@ const COLORS = [
   { name: "goldenrod", color: "#DC9925" },
   { name: "magicPotion", color: "#3FF5CA" },
 ];
+
 function Settings(props) {
   const searchRef = useRef();
-  const [openModal, setOpenModal] = useState(true);
   const dispatch = useDispatch();
+
+  const [openModal, setOpenModal] = useState(true);
+
+  const categories = useSelector((state) => state.categories.data);
+  const issuesTypes = useSelector((state) => state.issues.data);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
 
   const handleGeneralSettingSubmission = (values) => {
     dispatch(addProject(values));
   };
+
+  const handleCategorySubmission = () => {};
+
+  const handleIssueTypeSubmission = () => {};
 
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
@@ -382,13 +398,13 @@ function Settings(props) {
               >
                 <Formik
                   initialValues={{
-                    issueType: "",
-                    issueColor: "",
+                    name: "",
+                    // color: "",
                   }}
                   validate={(values) => {
                     const errors = {};
-                    if (!values.issueType) {
-                      errors.issueType = "Issue type is required";
+                    if (!values.name) {
+                      errors.name = "Issue type is required";
                     }
                     return errors;
                   }}
@@ -411,17 +427,15 @@ function Settings(props) {
                       {console.log("ppp", values)}
                       <div className="flex flex-col gap-2 py-2 mb-2">
                         <p className="text-red-200 text-md">
-                          {errors.issueType &&
-                            touched.issueType &&
-                            errors.issueType}
+                          {errors.name && touched.name && errors.name}
                         </p>
 
                         <Field
                           className="outline-none p-2 rounded max-w-96 border border-gray-200 rounded"
-                          id="issueType"
-                          name="issueType"
-                          placeholder="issue type"
-                          value={values.issueType}
+                          id="name"
+                          name="name"
+                          placeholder="issue type name"
+                          value={values.name}
                           onChange={handleChange}
                         />
                         <p className="text-xs">
@@ -432,18 +446,17 @@ function Settings(props) {
                             return (
                               <div className="flex items-center">
                                 <label
-                                  id="issueColor"
-                                  name="issueColor"
+                                  id="color"
+                                  name="color"
                                   style={{ backgroundColor: color }}
                                   className={`px-4 py-[1.5px] inline-block text-sm text-white rounded-full `}
                                 >
                                   Issue type list
                                 </label>
-                                {/* <label className={`bg-[#393939P] px-2 inline-block rounded-sm`}>Issue type list</label> */}
                                 <Field
                                   className="h-4 w-4 outline-none px-4 py-2 rounded max-w-96 border border-gray-200 rounded-full ml-2"
-                                  id="issueColor"
-                                  name="issueColor"
+                                  id="color"
+                                  name="color"
                                   type="radio"
                                   placeholder="category name"
                                   value={color}
@@ -529,12 +542,12 @@ function Settings(props) {
               >
                 <Formik
                   initialValues={{
-                    categoryName: "",
+                    name: "",
                   }}
                   validate={(values) => {
                     const errors = {};
-                    if (!values.categoryName) {
-                      errors.categoryName = "Category name is required";
+                    if (!values.name) {
+                      errors.name = "Category name is required";
                     }
                     return errors;
                   }}
@@ -555,20 +568,18 @@ function Settings(props) {
                     <Form onSubmit={handleSubmit}>
                       <div className="flex flex-col gap-2 py-2 mb-2">
                         <p className="text-red-200 text-md">
-                          {errors.categoryName &&
-                            touched.categoryName &&
-                            errors.categoryName}
+                          {errors.name && touched.name && errors.name}
                         </p>
                         <Field
                           className="outline-none p-2 rounded max-w-96 border border-gray-200 rounded"
-                          id="categoryName"
-                          name="categoryName"
+                          id="name"
+                          name="name"
                           placeholder="category name"
-                          value={values.categoryName}
+                          value={values.name}
                           onChange={handleChange}
                         />
                         <p className="text-xs">
-                          set it to issues, can be different for each project
+                          *set it to issues, can be different for each project
                         </p>
                       </div>
 
@@ -603,33 +614,39 @@ function Settings(props) {
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-300">
-                      {[1, 2, 3].map((bug) => (
-                        <tr key={bug.id} class="whitespace-nowrap">
-                          <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900">Backend</div>
-                          </td>
+                      {categories &&
+                        categories.map((category) => (
+                          <tr key={category.id} class="whitespace-nowrap">
+                            <td class="px-6 py-4">
+                              <div class="text-sm text-gray-900">
+                                {category.name}
+                              </div>
+                            </td>
 
-                          <td class="px-6 py-4">
-                            <a href="#">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="w-6 h-6 text-red-400"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 
+                            <td class="px-6 py-4">
+                              <div className="">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="w-6 h-6 text-red-400"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  onClick={() =>
+                                    dispatch(deleteCategoryById(category.id))
+                                  }
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 
                        4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                />
-                              </svg>
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
+                                  />
+                                </svg>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

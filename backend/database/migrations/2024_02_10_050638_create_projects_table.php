@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('key');
             $table->string('name');
             $table->foreignId('space_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

@@ -25,7 +25,8 @@ class UpdateProjectRequest extends FormRequest
             //
             'name' => 'required|string|max:70',
             'key' => 'required|string|max:70',
-            'space_id' => 'required|string|max:70'
+            'space_id' => 'required|string|max:70',
+            'user_id' => 'required|string|max:70'
         ];
     }
 }

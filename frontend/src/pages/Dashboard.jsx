@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoIosSettings } from "react-icons/io";
 import { RxCaretRight } from "react-icons/rx";
 import classNames from "classnames";
@@ -13,6 +13,7 @@ import AddModalUser from "../components/AddModalUser";
 import { RiProjectorFill } from "react-icons/ri";
 
 import { useSelector, useDispatch } from "react-redux";
+import { fetchUserById } from "../store/features/userSlice";
 
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
@@ -21,8 +22,27 @@ function Dashboard(props) {
 
   const [showCancelIcon, setShowCancelIcon] = useState(true);
 
+
+
+  
+  //spaces
+  const spaces = useSelector((state) => state.spaces)
+  console.log('spaces', spaces)
+  //issues
   const issues = useSelector((state) => state.issues);
+ 
   const auth = useSelector((state) => state.auth);
+
+
+  //fetch user
+  const user = useSelector((state) => state.user)
+  console.log('user', user)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserById(''))
+  }, [auth])
 
   console.log("auth", auth);
 
@@ -279,25 +299,25 @@ function Dashboard(props) {
                   <div className="">
                     <div className="text-sm pb-2">
                       <span className="font-medium mr-2">Filter:</span>
-                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200 rounded-full">
                         Assigned to me (1)
                       </span>
-                      <span className="px-2 py-[1.5] bg-green-200">
+                      <span className="px-2 py-[1.5] bg-green-200 rounded-full">
                         Created by me (1)
                       </span>
                     </div>
                     <div className="text-sm flex">
                       <span className="font-medium mr-2">Due Date:</span>
-                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200 rounded-full">
                         All
                       </span>
-                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200 rounded-full">
                         5 Days (0)
                       </span>
-                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200 rounded-full">
                         Due Today (0)
                       </span>
-                      <span className="px-2 py-[1.5] mr-2 bg-green-200">
+                      <span className="px-2 py-[1.5] mr-2 bg-green-200 rounded-full">
                         Overdue (0)
                       </span>
                     </div>

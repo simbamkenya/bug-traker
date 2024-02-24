@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
-import { data } from "../../data";
+import { BASE_URL } from "../../constants";
 import axios from "axios";
 
 //console.log('data', data)
 const initialState = {
-    data: [...data],
+    data: '',
     error: '',
     loading: true
 }

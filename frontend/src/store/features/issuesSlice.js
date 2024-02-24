@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { BASE_URL } from "../../constants";
 import { data } from "../../data";
 import axios from "axios";
 
@@ -50,7 +51,7 @@ export const deleteIssueById = createAsyncThunk(
 
 //console.log('data', data)
 const initialState = {
-    data: [...data],
+    data: [],
     error: '',
     loading: true
 }
@@ -81,11 +82,13 @@ export const issuesSlice = createSlice({
             state.loading = true
          })
          .addCase(fetchIssues.fulfilled, (state, action) => {
+            console.log("issues fetched", action.payload)
             state.loading = false
             state.data = action.payload.issues
          })
          .addCase(fetchIssues.rejected, (state, action) => {
-            state.loading = true
+            state.loading = true,
+            state.data = action.payload
          })
 
          builder.addCase(deleteIssueById.pending, (state, action) => {

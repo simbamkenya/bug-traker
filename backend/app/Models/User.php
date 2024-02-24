@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
 
     /**
@@ -43,12 +43,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function teams() {
+        return $this->belongsToMany(Team::class);
+    }
 
-    public function teams(){
-        return $this->hasMany(Team::class);
+    public function projects() {
+        return $this->hasMany(Project::class);
     }
     
-    public function issues(){
+    public function issues() {
         return $this->hasMany(Issue::class, 'assignee', 'id');
+    }
+    public function spaces() {
+        return $this->hasMany(Space::class);
     }
 }
