@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->foreignId('category_id')->nullable()->constrained();
             $table->foreignId('issue_type_id')->nullable()->constrained();
+            $table->foreignId('project_id')->nullable()->constrained();
+
            // $table->foreignId('assignee')->nullable()->constrained();
 
            $table->unsignedBigInteger('assignee');

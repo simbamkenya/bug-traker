@@ -5,7 +5,7 @@ import axios from "axios";
 
 //console.log('data', data)
 const initialState = {
-    data: [...data],
+    data: [],
     error: '',
     loading: true
 }
@@ -31,7 +31,7 @@ export const fetchProjects = createAsyncThunk(
     'projects/fetchProjects',
     async(_, thunkAPI) => {
         try {
-            const res = await axios.get(`${BASE_URL}/api/project`)
+            const res = await axios.get(`${BASE_URL}/api/projects`)
             return res.data
         } catch (error) {
             if(error.response && error.response.data.message){
@@ -80,8 +80,9 @@ export const projectsSlice = createSlice({
             state.loading = true
          })
          .addCase(fetchProjects.fulfilled, (state, action) => {
+            console.log('actons pro', action.payload.projects)
             state.loading = false
-            state.data = action.payload.users
+            state.data = action.payload.projects;
          })
          .addCase(fetchProjects.rejected, (state, action) => {
             state.loading = true
@@ -91,7 +92,6 @@ export const projectsSlice = createSlice({
             state.loading = true;
          })
          .addCase(deleteProjectById.fulfilled, (state, action) => {
-            console.log('ppp', action.payload)
             state.loading = false;
             state.error  =  null;
             

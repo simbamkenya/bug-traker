@@ -16,7 +16,8 @@ class ProjectController extends Controller
     public function index()
     {
         //
-        $projects = Project::all();
+        $projects = Project::with('issues')->get();
+
         return response()->json([
             'projects' => $projects,
             'message' => 'projects fetched successfully!'
@@ -37,6 +38,10 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         //
+        return response()->json([
+            'project' => $project,
+            'message' => 'success'
+        ]);
     }
 
     /**

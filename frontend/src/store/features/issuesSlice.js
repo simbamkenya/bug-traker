@@ -61,7 +61,26 @@ export const issuesSlice = createSlice({
     name: 'issues',
     initialState,
     reducers : {
-        fetchIs: (state, action) => {
+        filterIssues: (state, action) => {
+            console.log('filtering', state.data)
+              if(action.payload == "all"){
+                state.data = state.data;
+              } else {
+                const filteredIssues = state.data.filter((issue) => issue.status !== action.payload)
+                state.data = filteredIssues;
+              }
+               
+        },
+        filterByProject: (state, action) => {
+         console.log('paylload', action.payload)
+         const dd =  state.data.filter((issue) => issue.project_id !== action.payload);
+         console.log('dd', dd)
+         state.data = dd;
+        },
+        filterByCreator: (state, action) => {
+
+        },
+        filterByUser: (state, action) => {
 
         }
     },
@@ -106,5 +125,5 @@ export const issuesSlice = createSlice({
     }
 });
 
-
+export const { filterIssues, filterByProject } = issuesSlice.actions;
 export default issuesSlice.reducer;

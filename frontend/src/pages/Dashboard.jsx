@@ -15,6 +15,8 @@ import { RiProjectorFill } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserById } from "../store/features/userSlice";
 
+import { fetchProjects } from "../store/features/projectsSlice";
+
 function Dashboard(props) {
   const [openProjects, setOpenProjects] = useState(false);
   const [openIssues, setOpenIssues] = useState(false);
@@ -22,27 +24,30 @@ function Dashboard(props) {
 
   const [showCancelIcon, setShowCancelIcon] = useState(true);
 
+  let searchRef = useRef(null);
+  let navigate = useNavigate();
 
-
-  
   //spaces
-  const spaces = useSelector((state) => state.spaces)
-  console.log('spaces', spaces)
+  const spaces = useSelector((state) => state.spaces);
+  console.log("spaces", spaces);
   //issues
   const issues = useSelector((state) => state.issues);
- 
+
   const auth = useSelector((state) => state.auth);
 
+  const projects = useSelector((state) => state.projects.data);
+  console.log("ro", projects);
 
   //fetch user
-  const user = useSelector((state) => state.user)
-  console.log('user', user)
+  const user = useSelector((state) => state.user);
+  console.log("user", user);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUserById(''))
-  }, [auth])
+    dispatch(fetchUserById(""));
+    dispatch(fetchProjects());
+  }, [auth]);
 
   console.log("auth", auth);
 
@@ -63,37 +68,34 @@ function Dashboard(props) {
 
   const formatTime = function (date, notificationTime) {
     let time = Date.now() - new Date(date);
-    
-    if(time <= (5 * 1000)){
+
+    if (time <= 5 * 1000) {
       //now
       return `now`;
-    } else if ((time >= (5 * 1000)) && ((time <= 30 * 1000))) {
+    } else if (time >= 5 * 1000 && time <= 30 * 1000) {
       //10-20-30
-      time / 1000
+      time / 1000;
       return time;
-    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000)){
-      time/1000 * 60;
+    } else if (time >= 60 * 1000 && time <= 60 * 60 * 1000) {
+      (time / 1000) * 60;
       //minutes
       return time;
-    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000)){
+    } else if (time >= 60 * 1000 && time <= 60 * 60 * 1000) {
       //hours
       return time;
-    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000)) {
+    } else if (time >= 60 * 1000 && time <= 60 * 60 * 1000) {
       //days
       return time;
-    } else if ((time >= (60 * 1000)) && (time <= 60 * 60 * 1000) ) {
+    } else if (time >= 60 * 1000 && time <= 60 * 60 * 1000) {
       //months
-      return 
-    } else if (time >= (365 * 24 * 60 * 60 * 1000)) { 
+      return;
+    } else if (time >= 365 * 24 * 60 * 60 * 1000) {
       //years
-      time/ (365 * 24 * 60 * 60 * 1000)
-      return 
+      time / (365 * 24 * 60 * 60 * 1000);
+      return;
     }
     return time;
   };
-
-  let searchRef = useRef(null);
-  let navigate = useNavigate();
 
   const focus = () => {
     console.log("clicked", searchRef.current.focus());
@@ -109,8 +111,10 @@ function Dashboard(props) {
           {<AddModalUser />}
           {<AddModalProject />}
         </div>
-         
-         <span className="flex items-center text-4xl text-green-800 mr-2"><RiProjectorFill/></span>
+
+        <span className="flex items-center text-4xl text-green-800 mr-2">
+          <RiProjectorFill />
+        </span>
         <span className="font-bold text-2xl mr-2">Simba</span>
         <div
           onClick={() => navigate("/space/settings")}
@@ -221,49 +225,55 @@ function Dashboard(props) {
               </div>
             </div>
           </div>
-          <div
-            className={classNames(
-              "border-2 bg-white hover:bg-blue-600  min-w-full",
-              {
-                hidden: !openProjects,
-              }
-            )}
-          >
-            <div className="relative p-2 flex items-center border-slate-100 hover:text-white">
-              <div className="text-5xl flex items-center mr-2 fill-white">
-                <GoProject />
-              </div>
-              <div className="flex flex-col ">
-                <span className="font-medium px-2 mb-[2px]">bugtracker</span>
-                {/* <span className="px-2 font-light uppercase text-xs">bugtracker</span> */}
-                <div className="flex text-sm font-light">
-                  <Link className="px-2 hover:bg-green-600" to="">
-                    Add Issue
-                  </Link>
-                  <Link className="px-2 hover:bg-green-600" to="">
-                    Issue
-                  </Link>
+          **
+          {projects &&
+            projects.map((project) => (
+              <div
+                onClick={() => navigate(`/projects/${project.id}`)}
+                className={classNames(
+                  "border-2 bg-white hover:bg-blue-600  min-w-full",
+                  {
+                    hidden: !openProjects,
+                  }
+                )}
+              >
+                <div className="relative p-2 flex items-center border-slate-100 hover:text-white">
+                  <div className="text-5xl flex items-center mr-2 fill-white">
+                    <GoProject />
+                  </div>
+                  <div className="flex flex-col ">
+                    <span className="font-medium px-2 mb-[2px]">
+                      {project.name}
+                    </span>
+                    <div className="flex text-sm font-light">
+                      <Link className="px-2 hover:bg-green-600" to="">
+                        Add Issue
+                      </Link>
+                      <Link className="px-2 hover:bg-green-600" to="">
+                        Issue
+                      </Link>
+                    </div>
+                    <div className="text-xl absolute top-2 right-2">
+                      <a className="my-anchor-element">
+                        <IoSettingsSharp />
+                      </a>
+                      <Tooltip
+                        style={{
+                          paddingBlock: "0px",
+                          paddingInline: "6px",
+                          fontSize: "14px",
+                        }}
+                        anchorSelect=".my-anchor-element"
+                        place="top"
+                      >
+                        Project Setting
+                      </Tooltip>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xl absolute top-2 right-2">
-                  <a className="my-anchor-element">
-                    <IoSettingsSharp />
-                  </a>
-                  <Tooltip
-                    style={{
-                      paddingBlock: "0px",
-                      paddingInline: "6px",
-                      fontSize: "14px",
-                    }}
-                    anchorSelect=".my-anchor-element"
-                    place="top"
-                  >
-                    Project Setting
-                  </Tooltip>
-                </div>
               </div>
-            </div>
-          </div>
-
+            ))}
+          **
           <div className="">
             <div className="">
               <input

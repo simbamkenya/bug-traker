@@ -12,6 +12,8 @@ use App\Http\Controllers\SpaceController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,4 +45,6 @@ Route::group(['middleware' => ['json.response']], function () {
     Route::apiResource('/teams', TeamController::class);
 
     Route::apiResource('/users', UserController::class);
+    
+    Route::apiResource('/projects', ProjectController::class);
 });

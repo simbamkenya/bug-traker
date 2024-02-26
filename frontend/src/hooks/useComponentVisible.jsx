@@ -48,7 +48,7 @@ export default function useComponentVisible(initialIsVisible, addVisibility, pro
       setIsSpaceComponentVisible(false);
     }
     if (notificationRef.current && !notificationRef.current.contains(event.target)) {
-      console.log('clicked outside')
+   
       setIsNotificationComponentVisible(false);
     }
   };

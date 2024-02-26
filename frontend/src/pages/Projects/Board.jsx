@@ -1,13 +1,53 @@
-import React from "react";
-import Sidebar from "../components/Sidebar";
+import React, { useEffect } from "react";
+import Sidebar from "../../components/Sidebar";
 import { Link } from "react-router-dom";
 import { FaDiagramProject } from "react-icons/fa6";
 import { useRef } from "react";
 import { FaCaretLeft } from "react-icons/fa6";
 import { IoMdAdd } from "react-icons/io";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { fetchProjectById } from "../../store/features/projectSlice";
+import { fetchProjects } from "../../store/features/projectsSlice";
+import { fetchIssues } from "../../store/features/issuesSlice";
+import * as d3 from "d3";
 
 function Board(props) {
   const searchRef = useRef(null);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  //active project
+  const project = useSelector((state) => state.project.data);
+  const projects = useSelector((state) => state.projects.data);
+  const activeProject =
+    projects.find((activepro) => activepro.id !== project.id) ?? [];
+
+  let issues = activeProject.issues ?? [];
+
+  const issuesOrganizedByStatus = issues.reduce(
+    (map, e) => ({
+      ...map,
+      [e.status]: [...(map[e.status] ?? []), e],
+    }),
+    {}
+  );
+
+  console.log("issues", issuesOrganizedByStatus);
+
+  let openIssues = issuesOrganizedByStatus["Open"] ?? [];
+  let closedIssues = issuesOrganizedByStatus["Closed"] ?? [];
+  let inProgressIssues = issuesOrganizedByStatus["In Progress"] ?? [];
+  let revokedIssues = issuesOrganizedByStatus["Revoked"] ?? [];
+  console.log('pro', inProgressIssues)
+
+  useEffect(() => {
+    dispatch(fetchIssues());
+    dispatch(fetchProjectById(id));
+    dispatch(fetchProjects());
+  }, []);
+
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
       <Sidebar />
@@ -18,7 +58,7 @@ function Board(props) {
               <FaDiagramProject />
             </div>
             <Link to="" className="text-sm uppercase mr-2 py-4  ml-2">
-              Project name
+              {project.name}
             </Link>
             <div class="relative ml-auto mr-2">
               <input
@@ -77,9 +117,9 @@ function Board(props) {
               <div className="flex flex-col flex-start">
                 <span
                   for="countries"
-                  class="block mb-2 text-sm font-light text-gray-900 dark:text-gray-400"
+                  class="block mb-2 text-sm  text-gray-900 dark:text-gray-400"
                 >
-                  Issue Type
+                  Type
                 </span>
                 <button className="py-2 px-4 min-w-40 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200">
                   <div className="flex justify-center -rotate-90 w-8 ml-auto text-2xl">
@@ -134,32 +174,48 @@ function Board(props) {
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-red-400 rounded-full mr-2 inline-block"></div>
-                Open 
+                Open
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
                   2
                 </span>
               </div>
-              <div className="bg-white rounded p-4 min-h-96">
-                <a href="#" className="flex items-center text-sm text-green-400">
+              <div className="bg-white rounded p-4 min-h-96 ">
+                <a
+                  href="#"
+                  className="flex items-center text-sm text-green-400"
+                >
                   <span className="text-sm mr-[2px]">
                     <IoMdAdd />
                   </span>
                   Add Issue...
                 </a>
-                <div className="flex flex-col border border-gray-200 p-2 mt-2 hover:shadow-lg">
-                  <a href="#" className="text-sm uppercase text-blue-800 hover:underline">BugTracker-1</a>
-                  <span className="text-sm py-[4px]">
-                    Lorem ipsum dolor, sit amet
-                  </span>
-                  <div className="flex items-center">
-                    <div className="flex items-center justify-center text-xs text-white w-6 h-6 rounded-full bg-red-300 mr-2">
-                      O
+                {openIssues &&
+                  openIssues.map((issue) => (
+                    <div className="flex flex-col border border-gray-200 p-2 mt-2 hover:shadow-lg">
+                      <a
+                        href="#"
+                        className="text-sm uppercase text-blue-800 hover:underline"
+                      >
+                        {issue.subject}
+                      </a>
+                      <span className="text-sm py-[4px]">
+                        {issue.description}
+                      </span>
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center text-xs text-white w-6 h-6 rounded-full bg-red-300 mr-2">
+                          O
+                        </div>
+                        <span className="text-xs">Set due date</span>
+                      </div>
                     </div>
-                    <span className="text-xs">Set due date</span>
-                  </div>
-                </div>
+                  ))}
                 <div className="flex flex-col border border-gray-200 p-2 mt-2 hover:shadow-lg">
-                  <a href="#" className="text-sm uppercase text-blue-800 hover:underline">BugTracker-2</a>
+                  <a
+                    href="#"
+                    className="text-sm uppercase text-blue-800 hover:underline"
+                  >
+                    BugTracker-2
+                  </a>
                   <span className="text-sm py-[4px]">
                     Lorem ipsum dolor, sit amet
                   </span>
@@ -177,30 +233,93 @@ function Board(props) {
                 <div className="h-3 w-3 p-2  bg-blue-400 rounded-full mr-2 inline-block"></div>
                 In Progress
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
-                  2
+                  {inProgressIssues.length}
                 </span>
               </div>
-              <div className="bg-white rounded min-h-96"></div>
+              <div className="bg-white rounded p-4 min-h-96">
+                {inProgressIssues &&
+                  inProgressIssues.map((issue) => (
+                    <div className="flex flex-col border border-gray-200 p-2 mt-2 hover:shadow-lg">
+                      <a
+                        href="#"
+                        className="text-sm uppercase text-blue-800 hover:underline"
+                      >
+                        {issue.subject}
+                      </a>
+                      <span className="text-sm py-[4px]">
+                        {issue.description}
+                      </span>
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center text-xs text-white w-6 h-6 rounded-full bg-red-300 mr-2">
+                          O
+                        </div>
+                        <span className="text-xs">Set due date</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-green-400 rounded-full mr-2 inline-block"></div>
                 Closed
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
-                  2
+                  {closedIssues.length}
                 </span>
               </div>
-              <div className="bg-white rounded min-h-96"></div>
+              <div className="bg-white rounded p-4 min-h-96">
+                {closedIssues &&
+                  closedIssues.map((issue) => (
+                    <div className="flex flex-col border border-gray-200 p-2 mt-2 hover:shadow-lg">
+                      <a
+                        href="#"
+                        className="text-sm uppercase text-blue-800 hover:underline"
+                      >
+                        {issue.subject}
+                      </a>
+                      <span className="text-sm py-[4px]">
+                        {issue.description}
+                      </span>
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center text-xs text-white w-6 h-6 rounded-full bg-red-300 mr-2">
+                          O
+                        </div>
+                        <span className="text-xs">Set due date</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
             <div className="flex-1 ">
               <div className="font-bold text-md py-2 flex items-center">
                 <div className="h-3 w-3 p-2  bg-yellow-200 rounded-full mr-2 inline-block"></div>
                 Revoked
                 <span className="px-4 bg-gray-300 inline-block rounded-full ml-2">
-                  2
+                  {revokedIssues.length}
                 </span>
               </div>
-              <div className="bg-white rounded min-h-96"></div>
+              <div className="bg-white rounded p-4 min-h-96">
+                {revokedIssues &&
+                  revokedIssues.map((issue) => (
+                    <div className="flex flex-col border border-gray-200 p-2 mt-2 hover:shadow-lg">
+                      <a
+                        href="#"
+                        className="text-sm uppercase text-blue-800 hover:underline"
+                      >
+                        {issue.subject}
+                      </a>
+                      <span className="text-sm py-[4px]">
+                        {issue.description}
+                      </span>
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center text-xs text-white w-6 h-6 rounded-full bg-red-300 mr-2">
+                          O
+                        </div>
+                        <span className="text-xs">Set due date</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ import Projects from "./pages/Projects/Index";
 import AddIssue from "./pages/Projects/AddIssue";
 import GnattChart from "./pages/Projects/GnattChart";
 import Issues from "./pages/Projects/Issues";
-import Board from "./pages/Board";
+import Board from "./pages/Projects/Board";
 import Settings from "./pages/Projects/Settings";
 import SpaceLayout from "./layouts/SpaceLayout";
 import SpaceSetting from "./pages/spaces/Settings";
@@ -42,12 +42,12 @@ function App() {
       <Route element={<DashLayout />}>
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/bugs" element={<ProtectedRoute><Bugs /></ProtectedRoute>} />
-          <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
-          <Route path="/projects/addissue" element={<ProtectedRoute><AddIssue /></ProtectedRoute>} />
-          <Route path="/projects/issues" element={<ProtectedRoute><Issues /></ProtectedRoute>} />
-          <Route path="/projects/chart" element={<ProtectedRoute><GnattChart /></ProtectedRoute>} />
-          <Route path="/projects/board" element={<ProtectedRoute><Board /></ProtectedRoute>} />
-          <Route path="/projects/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+          <Route path="/projects/:id" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+          <Route path="/projects/:id/addissue" element={<ProtectedRoute><AddIssue /></ProtectedRoute>} />
+          <Route path="/projects/:id/issues" element={<ProtectedRoute><Issues /></ProtectedRoute>} />
+          <Route path="/projects/:id/chart" element={<ProtectedRoute><GnattChart /></ProtectedRoute>} />
+          <Route path="/projects/:id/board" element={<ProtectedRoute><Board /></ProtectedRoute>} />
+          <Route path="/projects/:id/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         
       </Route>
       

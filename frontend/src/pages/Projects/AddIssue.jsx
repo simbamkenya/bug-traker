@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useRef } from "react";
 import { Form, Formik, Field } from "formik";
 import { FaCaretLeft } from "react-icons/fa6";
@@ -14,12 +14,35 @@ import { addIssue, fetchIssues } from "../../store/features/issuesSlice";
 import { fetchIssueTypes } from "../../store/features/issueTypesSlice";
 import { fetchCategories } from "../../store/features/categoriesSlice";
 import { fetchUsers } from "../../store/features/usersSlice";
+import { fetchProjectById } from "../../store/features/projectSlice";
 
 import { useSelector, useDispatch } from "react-redux";
 
+import { STATUSES } from "../../constants";
+
 import Mentions from "rc-mentions";
+import useComponentVisible from "../../hooks/useComponentVisible";
 const { Option } = Mentions;
+
 function AddIssue(props) {
+  const {
+    ref,
+    addRef,
+    spaceRef,
+    profileRef,
+    notificationRef,
+    isComponentVisible,
+    setIsComponentVisible,
+    isSecondComponentVisible,
+    setIsSecondComponentVisible,
+    setIsProfileComponentVisible,
+    setIsNotificationComponentVisible,
+    isNotificationComponentVisible,
+    isProfileComponentVisible,
+    isSpaceComponentVisible,
+    setIsSpaceComponentVisible,
+  } = useComponentVisible(false, false, false, false, false);
+
   const searchRef = useRef(null);
 
   const [openIssueCategory, setOpenIssueCategory] = useState(false);
@@ -35,13 +58,6 @@ function AddIssue(props) {
 
   console.log("userss", users);
 
-  const statuses = [
-    { status: "Open", color: "#ED8077" },
-    { status: "In Progress", color: "#4488C5" },
-    { status: "Closed", color: "#A1AF2F" },
-    { status: "Revoved", color: "#92CDC3" },
-  ];
-
   const [openStatus, setOpenStatus] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const [openAssignee, setOpenAssignee] = useState(false);
@@ -51,11 +67,15 @@ function AddIssue(props) {
   const dispatch = useDispatch();
 
   const [value, setValue] = useState("Issue description..");
+  const { id } = useParams();
+
+  const project = useSelector((state) => state.project.data);
 
   useEffect(() => {
     dispatch(fetchIssueTypes());
     dispatch(fetchCategories());
     dispatch(fetchUsers());
+    dispatch(fetchProjectById(id));
   }, []);
 
   const handleNewIssueSubmission = (values, { setSubmitting }) => {
@@ -83,7 +103,7 @@ function AddIssue(props) {
               <FaDiagramProject />
             </div>
             <Link to="" className="text-sm uppercase mr-2 py-4  ml-2">
-              Project name
+              {project.name}
             </Link>
             <div class="relative ml-auto mr-2">
               <input
@@ -188,9 +208,11 @@ function AddIssue(props) {
                       </span>
                       <div className="relative z-40">
                         <button
-                          onClick={() =>
-                            setOpenIssueCategory(!openIssueCategory)
-                          }
+                          ref={ref}
+                          onClick={() => {
+                            // setOpenIssueCategory(!openIssueCategory)
+                            setIsComponentVisible(true);
+                          }}
                           className="flex border borde r-2 border-gray-300 py-2 px-4 min-w-48 rounded-sm bg-white focus:shadow focus:shadow-zomp focus:bg-z omp bg-bl ue-100 hover:text-metallicblue"
                         >
                           {issueType.name}
@@ -200,7 +222,7 @@ function AddIssue(props) {
                         </button>
                         <div
                           className={`absolute bg-white min-w-48 p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                            openIssueCategory ? "block" : "hidden"
+                            isComponentVisible ? "block" : "hidden"
                           }`}
                         >
                           <div className="mt-[2px]">
@@ -255,13 +277,17 @@ function AddIssue(props) {
                       <span className="px-2 font-sm text-md">Status</span>
                       <div className="relative z-40 ml-auto">
                         <button
-                          onClick={() => setOpenStatus(!openStatus)}
+                          ref={spaceRef}
+                          onClick={() => {
+                            // setOpenStatus(!openStatus)
+                            setIsSpaceComponentVisible(true);
+                          }}
                           className="flex items-center gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
                         >
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{
-                              backgroundColor: statuses.find(
+                              backgroundColor: STATUSES.find(
                                 (item) => item?.status == status
                               )?.color,
                             }}
@@ -274,11 +300,11 @@ function AddIssue(props) {
                         </button>
                         <div
                           className={`absolute bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                            openStatus ? "block" : "hidden"
+                            isSpaceComponentVisible ? "block" : "hidden"
                           }`}
                         >
                           <div className="mt-[2px]">
-                            {statuses.map(({ status, color }) => (
+                            {STATUSES.map(({ status, color }) => (
                               <div
                                 onClick={() => {
                                   setStatus(status);
@@ -301,8 +327,12 @@ function AddIssue(props) {
                       <span className="px-2 font-sm text-md">Category</span>
                       <div className="relative z-40 ml-auto">
                         <button
+                          ref={notificationRef}
                           // onClick={() => setOpenIssueCategory(!openIssueCategory)}
-                          onClick={() => setOpenCategory(!openCategory)}
+                          onClick={() => {
+                            // setOpenCategory(!openCategory)
+                            setIsNotificationComponentVisible(true);
+                          }}
                           className="flex gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
                         >
                           {category.name}
@@ -312,7 +342,7 @@ function AddIssue(props) {
                         </button>
                         <div
                           className={`absolute bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                            openCategory ? "block" : "hidden"
+                            isNotificationComponentVisible ? "block" : "hidden"
                           }`}
                         >
                           {category.name}
@@ -338,7 +368,11 @@ function AddIssue(props) {
                       <span className="px-2 font-sm text-md">Assignee</span>
                       <div className="relative ml-auto">
                         <button
-                          onClick={() => setOpenAssignee(!openAssignee)}
+                          ref={profileRef}
+                          onClick={() => {
+                            // setOpenAssignee(!openAssignee)
+                            setIsProfileComponentVisible(true)
+                          }}
                           className="flex gap-2 border border-gray-300 py-2 px-4 min-w-48 rounded-sm hover:bg-blue-400 bg-blue-100 hover:text-gray-200"
                         >
                           {assignee.name}
@@ -348,7 +382,7 @@ function AddIssue(props) {
                         </button>
                         <div
                           className={`absolute z-999 bg-white min-w-full p-2 shadow-md rounded-sm -mt-[2px] border border-gray-300 ${
-                            openAssignee ? "block" : "hidden"
+                            isProfileComponentVisible ? "block" : "hidden"
                           }`}
                         >
                           <div className="mt-[2px]">

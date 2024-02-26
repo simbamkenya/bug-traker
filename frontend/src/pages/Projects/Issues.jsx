@@ -6,15 +6,37 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchIssues } from "../../store/features/issuesSlice";
 import { deleteIssueById } from "../../store/features/issuesSlice";
+import { filterIssues } from "../../store/features/issuesSlice";
+import { STATUSES } from "../../constants";
+import { useParams } from "react-router-dom";
+import { fetchProjectById } from "../../store/features/projectSlice";
+import { fetchProjects } from "../../store/features/projectsSlice";
+
+import { filterByProject } from "../../store/features/issuesSlice";
+
 
 function Issues(props) {
   const searchRef = useRef();
   const dispatch = useDispatch();
   const bugs = useSelector((state) => state.issues.data);
+  const {id} = useParams();
+  
+  //active project
+  const project = useSelector((state) => state.project.data);
+  const projects = useSelector((state) => state.projects.data);
+  const activeProject = projects.find((activepro) => activepro.id !== project.id) ?? [];
 
-  console.log("bugs", bugs);
+  console.log('active pro', activeProject)
+
+  console.log('origin project', project)
+//  console.log('projee', projects)
+
   useEffect(() => {
-    dispatch(fetchIssues())
+    dispatch(fetchIssues());
+    dispatch(fetchProjectById(id));
+    dispatch(fetchProjects())
+    dispatch(filterByProject(id))
+   
   }, []);
 
   return (
@@ -27,7 +49,7 @@ function Issues(props) {
               <FaDiagramProject />
             </div>
             <Link to="" className="text-sm uppercase mr-2 py-4  ml-2">
-              Project name
+              {project.name}
             </Link>
             <div class="relative ml-auto mr-2">
               <input
@@ -82,20 +104,20 @@ function Issues(props) {
         <div className="m-h-48 mx-4 my-2 rounded">
           <div className="font-semibold text-md py-2">Search Conditions</div>
           <div className="py-2">
-            <div className="flex gap-2 text-sm py-2">
+            <div className="flex gap-2 text-sm py-2 group">
               <span className="font-bold">Status:</span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
+
+              <span className="px-4 inline-block rounded-full group-focus-within:text-red-500">
                 All
               </span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
-                Open
-              </span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
-                In Progress
-              </span>
-              <span className="px-4 inline-block rounded-full hover:bg-blue-400 hover:text-white">
-                Closed
-              </span>
+              {STATUSES.map(({ status }) => (
+                <div
+                  onClick={() => dispatch(filterIssues(status))}
+                  className="px-4 inline-block rounded-full  focus:bg-blue-400 hover:text-white"
+                >
+                  {status}
+                </div>
+              ))}
             </div>
           </div>
           <div class="w-full">
@@ -113,12 +135,16 @@ function Issues(props) {
                     <th class="px-6 py-2 text-xs text-left text-gray-500">
                       Bug Priority
                     </th>
-                    <th class="px-6 py-2 text-xs text-left text-gray-500">Status</th>
-                    <th class="px-6 py-2 text-xs text-left text-gray-500">Delete</th>
+                    <th class="px-6 py-2 text-xs text-left text-gray-500">
+                      Status
+                    </th>
+                    <th class="px-6 py-2 text-xs text-left text-gray-500">
+                      Delete
+                    </th>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-300">
-                  {bugs.map((bug) => (
+                  {activeProject.issues && activeProject.issues.map((bug) => (
                     <tr key={bug.id} class="whitespace-nowrap">
                       <td class="px-6 py-2 text-xs text-gray-500">{bug.id}</td>
                       <td class="px-6 py-2">

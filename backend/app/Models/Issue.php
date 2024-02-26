@@ -17,6 +17,7 @@ class Issue extends Model
         'due',
         'description',
         'category_id',
+        'project_id',
         'assignee',
         'issue_type'
     ];
@@ -29,5 +30,8 @@ class Issue extends Model
     }
     public function assignee(){
         return $this->belongsTo(User::class, 'assignee');
+    }
+    public function project(){
+        return $this->belongsTo(Project::class);
     }
 }

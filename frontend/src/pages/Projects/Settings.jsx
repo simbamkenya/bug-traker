@@ -1,6 +1,6 @@
 import Sidebar from "../../components/Sidebar";
 import { FaDiagramProject } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -17,6 +17,8 @@ import { addIssueType } from "../../store/features/issueTypesSlice";
 import { addCategory } from "../../store/features/categoriesSlice";
 import { deleteCategoryById } from "../../store/features/categoriesSlice";
 import { fetchCategories } from "../../store/features/categoriesSlice";
+
+import { fetchProjectById } from "../../store/features/projectSlice";
 
 const COLORS = [
   { name: "black", color: "#393939" },
@@ -35,13 +37,19 @@ function Settings(props) {
   const searchRef = useRef();
   const dispatch = useDispatch();
 
+  const {id} = useParams();
+
   const [openModal, setOpenModal] = useState(true);
 
   const categories = useSelector((state) => state.categories.data);
   const issuesTypes = useSelector((state) => state.issues.data);
+  
+  const project = useSelector((state) => state.project.data)
 
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchProjectById(id));
+
   }, []);
 
   const handleGeneralSettingSubmission = (values) => {
@@ -62,7 +70,7 @@ function Settings(props) {
               <FaDiagramProject />
             </div>
             <Link to="" className="text-sm uppercase mr-2 py-4  ml-2">
-              Project name
+              {project.name}
             </Link>
             <div class="relative ml-auto mr-2">
               <input

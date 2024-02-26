@@ -12,3 +12,10 @@ export const COLORS = [
     {name: 'goldenrod', color: '#DC9925'},
     {name: 'magicPotion', color: '#3FF5CA'}
 ]
+
+export const STATUSES = [
+    { status: "Open", color: "#ED8077" },
+    { status: "In Progress", color: "#4488C5" },
+    { status: "Closed", color: "#A1AF2F" },
+    { status: "Revoked", color: "#92CDC3" },
+  ];

@@ -4,9 +4,23 @@ import Gantt from "../../components/Gantt";
 import { FaDiagramProject } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
+import { useEffect } from "react";
+import { fetchProjectById } from "../../store/features/projectSlice";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function GnattChart(props) {
   const searchRef = useRef(null);
+  const dispatch = useDispatch();
+
+  const {id} = useParams();
+
+  const project = useSelector((state) => state.project.data)
+
+  useEffect(() => {
+    dispatch(fetchProjectById(id));
+  }, [])
   return (
     <div className="flex w-full min-h-screen bg-gray-100">
       <Sidebar />
@@ -17,7 +31,7 @@ function GnattChart(props) {
               <FaDiagramProject />
             </div>
             <Link to="" className="text-sm uppercase mr-2 py-4  ml-2">
-              Project name
+              {project.name}
             </Link>
             <div class="relative ml-auto mr-2">
               <input
