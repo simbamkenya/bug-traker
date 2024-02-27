@@ -1,19 +1,36 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+
 
 function StackedBarChart(props) {
   const ref = useRef();
   const margin = { top: 10, right: 10, bottom: 20, left: 10 };
+  const [width, setWidth] = useState(100);
+  const [height, setHeight] = useState(100);
+
+  console.log({width, height});
 
   useEffect(() => {
+    const resizeObserver = new ResizeObserver((event) => {
+        setWidth(event[0].contentBoxSize[0].inlineSize);
+        setHeight(event[0].contentBoxSize[0].blockSize);
+    })
+
+    resizeObserver.observe(ref.current);
+    
+
+
     //   const width = 400 - margin.left - margin.right;
-    let width = ref.current.clientWidth * 0.95;
+    // let width = widthk ?? ref.current.clientWidth * 0.95;
     const height = 60 - margin.top - margin.bottom;
 
-    const svg = d3
+    let el = d3
       .select(ref.current)
-      .append("svg")
-      .attr("width", width + margin.left + margin.right)
+
+      el.selectAll("*").remove();
+
+    const svg=  el.append("svg")
+      .attr("width", width * 0.95 )
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -33,31 +50,13 @@ function StackedBarChart(props) {
     const xMax = d3.max(stackedData[stackedData.length - 1], (d) => d[1]);
 
     // scales
-
     const x = d3.scaleLinear().domain([0, xMax]).nice().range([0, width]);
 
     const y = d3.scaleBand().domain(months).range([0, height]).padding(0.25);
 
     const color = d3.scaleOrdinal().domain(status).range(colors);
 
-    // axes
-
-    //   const xAxis = d3.axisBottom(x).ticks(5, "~s");
-    //   const yAxis = d3.axisLeft(y);
-
-    //   svg
-    //     .append("g")
-    //     .attr("transform", `translate(0,${height})`)
-    //     .call(xAxis)
-    //     .call((g) => g.select(".domain").remove());
-
-    //   svg
-    //     .append("g")
-    //     .call(yAxis)
-    //     .call((g) => g.select(".domain").remove());
-
     // draw bars
-
     // create one group for each fruit
     const layers = svg
       .append("g")
@@ -87,8 +86,10 @@ function StackedBarChart(props) {
         // so that we have access to what fruit each bar belongs to.
         .delay(i * duration)
         .attr("width", (d) => x(d[1]) - x(d[0]));
+     
     });
-  }, []);
+    
+  }, [ref, width]);
 
   return <div ref={ref}></div>;
 }
